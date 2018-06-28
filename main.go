@@ -51,6 +51,11 @@ func decodeAudio(decoder *ffmpeg.AudioDecoder, packet av.Packet) (av.AudioFrame,
 	return frame, nil
 }
 
+func demuxVideo(packet av.Packet) error {
+	// https://godoc.org/github.com/nareix/joy4/codec/h264parser
+	return nil
+}
+
 func readPacket(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.AudioDecoder, i int) error {
 	packet, err := file.ReadPacket()
 	if err != nil {
@@ -64,9 +69,13 @@ func readPacket(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.Aud
 		if err != nil {
 			return err
 		}
-		fmt.Println("\t| frame:", frame.SampleCount)
+		fmt.Println("\t| audio:", frame.SampleCount)
 	} else {
-		fmt.Println("\t| ")
+		err := demuxVideo(packet)
+		if err != nil {
+			return err
+		}
+		fmt.Println("\t| video:", len(packet.Data))
 	}
 
 	return nil
