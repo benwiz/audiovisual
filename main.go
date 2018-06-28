@@ -37,16 +37,15 @@ func readPackets(file av.DemuxCloser, streams []av.CodecData) {
 		if err != nil {
 			break
 		}
-		fmt.Println("-------", "\npkt:", i, streams[pkt.Idx].Type(), "\nlen:", len(pkt.Data), "\nkeyframe:", pkt.IsKeyFrame)
-		fmt.Println(pkt.Data)
+		fmt.Println("| pkt:", i, streams[pkt.Idx].Type(), "\t| len:", len(pkt.Data), "\t| keyframe:", pkt.IsKeyFrame)
+		// fmt.Println(pkt.Data)
 	}
-
-	file.Close()
 }
 
 func main() {
 	var file av.DemuxCloser
 	file, _ = avutil.Open("data/daft-punk.mp4")
+	defer file.Close()
 
 	streams := probeStreams(file)
 	readPackets(file, streams)
