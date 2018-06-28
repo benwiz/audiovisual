@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	// "reflect"
 
@@ -38,27 +39,44 @@ func getStreamsAndAudioDecoder(file av.DemuxCloser) ([]av.CodecData, *ffmpeg.Aud
 	return streams, decoder, nil
 }
 
+func decodeAudio(decoder *ffmpeg.AudioDecoder, packet av.Packet) (av.AudioFrame, error) {
+	ok, frame, err := decoder.Decode(packet.Data)
+	if err != nil {
+		return frame, err
+	}
+	if !ok {
+		return frame, errors.New("decode not ok")
+	}
+
+	return frame, nil
+}
+
 func readPackets(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.AudioDecoder) error {
 	for i := 0; i < 7; i++ {
-		var pkt av.Packet
-		pkt, err := file.ReadPacket()
+		packet, err := file.ReadPacket()
 		if err != nil {
 			return err
 		}
-		fmt.Println("| pkt:", i, streams[pkt.Idx].Type(), "\t| len:", len(pkt.Data), "\t| keyframe:", pkt.IsKeyFrame)
-		// fmt.Println(pkt.Data)
+		packetType := streams[packet.Idx].Type()
+		fmt.Print("| packet:", i, packetType, "\t| len:", len(packet.Data), "\t| keyframe:", packet.IsKeyFrame, " ")
 
-		// b, frame, err := av.AudioDecoder.Decode(pkt.Data)
-		// if err != nil {
-		// 	return err
-		// }
-		// defer av.AudioDecoder.Close()
+		if packetType.IsAudio() {
+			frame, err := decodeAudio(decoder, packet)
+			if err != nil {
+				return err
+			}
+			fmt.Println("\t| frame:", frame.SampleCount)
+		} else {
+			fmt.Println("\t| ")
+		}
 	}
 
 	return nil
 }
 
 func main() {
+	fmt.Println("\n\n\t\t\t~~~~~~ \n\n ")
+
 	var file av.DemuxCloser
 	file, _ = avutil.Open("data/daft-punk.mp4")
 	defer file.Close()
@@ -67,11 +85,14 @@ func main() {
 	streams, decoder, err := getStreamsAndAudioDecoder(file)
 	if err != nil {
 		fmt.Println("getStreamsAndAudioDecoder error:", err)
+		return
 	}
+	defer decoder.Close()
 
 	// read packets one by one
 	err = readPackets(file, streams, decoder)
 	if err != nil {
 		fmt.Println("Error:", err)
+		return
 	}
 }
