@@ -51,23 +51,32 @@ func decodeAudio(decoder *ffmpeg.AudioDecoder, packet av.Packet) (av.AudioFrame,
 	return frame, nil
 }
 
-func readPackets(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.AudioDecoder) error {
-	for i := 0; i < 7; i++ {
-		packet, err := file.ReadPacket()
+func readPacket(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.AudioDecoder, i int) error {
+	packet, err := file.ReadPacket()
+	if err != nil {
+		return err
+	}
+	packetType := streams[packet.Idx].Type()
+	fmt.Print("| packet:", i, packetType, "\t| len:", len(packet.Data), "\t| keyframe:", packet.IsKeyFrame, " ")
+
+	if packetType.IsAudio() {
+		frame, err := decodeAudio(decoder, packet)
 		if err != nil {
 			return err
 		}
-		packetType := streams[packet.Idx].Type()
-		fmt.Print("| packet:", i, packetType, "\t| len:", len(packet.Data), "\t| keyframe:", packet.IsKeyFrame, " ")
+		fmt.Println("\t| frame:", frame.SampleCount)
+	} else {
+		fmt.Println("\t| ")
+	}
 
-		if packetType.IsAudio() {
-			frame, err := decodeAudio(decoder, packet)
-			if err != nil {
-				return err
-			}
-			fmt.Println("\t| frame:", frame.SampleCount)
-		} else {
-			fmt.Println("\t| ")
+	return nil
+}
+
+func readPackets(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.AudioDecoder) error {
+	for i := 0; i < 7; i++ {
+		err := readPacket(file, streams, decoder, i)
+		if err != nil {
+			return err
 		}
 	}
 
