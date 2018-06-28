@@ -19,6 +19,15 @@ Services:
 - (many services) Audio mutates video
 - (many services) Video mutates audio
 
+## Notes
+
+### Figure out frame rate of mp4
+
+- Open it in VLC
+- CMD+I (Media Information)
+- Codec Details
+- Frame Rate (daft-punk.mp4 is 23.976024)
+
 ## To Do
 
 - Create video file consumer service using [GoCV](https://gocv.io/)
