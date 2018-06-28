@@ -51,8 +51,8 @@ func decodeAudio(decoder *ffmpeg.AudioDecoder, packet av.Packet) (av.AudioFrame,
 	return frame, nil
 }
 
-func demuxVideo(packet av.Packet) error {
-	// https://godoc.org/github.com/nareix/joy4/codec/h264parser
+// https://godoc.org/github.com/nareix/joy4/codec/h264parser
+func decodeVideo(packet av.Packet) error {
 	return nil
 }
 
@@ -62,7 +62,7 @@ func readPacket(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.Aud
 		return err
 	}
 	packetType := streams[packet.Idx].Type()
-	fmt.Print("| packet:", i, packetType, "\t| len:", len(packet.Data), "\t| keyframe:", packet.IsKeyFrame, " ")
+	fmt.Print("packet:", i, packetType, "\t| len:", len(packet.Data), "\t| keyframe:", packet.IsKeyFrame, " ")
 
 	if packetType.IsAudio() {
 		frame, err := decodeAudio(decoder, packet)
@@ -71,7 +71,7 @@ func readPacket(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.Aud
 		}
 		fmt.Println("\t| audio:", frame.SampleCount)
 	} else {
-		err := demuxVideo(packet)
+		err := decodeVideo(packet)
 		if err != nil {
 			return err
 		}
@@ -82,7 +82,7 @@ func readPacket(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.Aud
 }
 
 func readPackets(file av.DemuxCloser, streams []av.CodecData, decoder *ffmpeg.AudioDecoder) error {
-	for i := 0; i < 7; i++ {
+	for i := 0; i < 20; i++ {
 		err := readPacket(file, streams, decoder, i)
 		if err != nil {
 			return err
