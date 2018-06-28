@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	// "reflect"
+
 	"github.com/nareix/joy4/av"
 	"github.com/nareix/joy4/av/avutil"
 	"github.com/nareix/joy4/format"
@@ -11,10 +13,7 @@ func init() {
 	format.RegisterAll()
 }
 
-func main() {
-	file, _ := avutil.Open("data/daft-punk.mp4")
-
-	// Output info about streams
+func probeStreams(file av.DemuxCloser) []av.CodecData {
 	fmt.Println()
 	streams, _ := file.Streams()
 	for _, stream := range streams {
@@ -28,7 +27,11 @@ func main() {
 	}
 	fmt.Println()
 
-	for i := 0; i < 3; i++ {
+	return streams
+}
+
+func readPackets(file av.DemuxCloser, streams []av.CodecData) {
+	for i := 0; i < 7; i++ {
 		var pkt av.Packet
 		pkt, err := file.ReadPacket()
 		if err != nil {
@@ -39,4 +42,12 @@ func main() {
 	}
 
 	file.Close()
+}
+
+func main() {
+	var file av.DemuxCloser
+	file, _ = avutil.Open("data/daft-punk.mp4")
+
+	streams := probeStreams(file)
+	readPackets(file, streams)
 }
