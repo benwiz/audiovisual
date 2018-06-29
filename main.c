@@ -29,8 +29,7 @@ int main()
     int y = 0;
     int video_count = 0;
 
-    // Read, modify, and write one audio_sample at a time
-    // Read, modify, and write one video_frame at a time
+    // Read, modify, and write one audio_sample and video_frame at a time
     while (1)
     {
         // Audio
