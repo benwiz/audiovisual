@@ -6,6 +6,11 @@ Sound, audio, and maybe location all interact and blur to output something new.
 
 The idea is to take a video feed and an audio feed (either from that same video source or a separate source) and cause them to interact. Hopefully location can be integrated into this since I plan to use travel footage, travel audio, and local music as inputs.
 
+## Requirements
+
+- ffmpeg
+- ffplay?
+
 ## Notes
 
 ### Figure out frame rate of mp4
