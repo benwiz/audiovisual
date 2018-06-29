@@ -2,6 +2,18 @@
 #include <stdint.h>
 #include <stdio.h>
 
+/*
+ * separate-files.c
+ *
+ * This file consumes an audio file (or audio from a video file) and
+ * a video file. It transforms the data from each and outputs each separately.
+ * This could be valuable if I really am getting data from two separate
+ * sources and want to output to two separate sources.
+ *
+ * TODO:
+ * - Command line arguments for inputs configus (filename, sample rate, video size, etc.)
+ */
+
 // Video resolution
 #define W 1280
 #define H 720

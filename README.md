@@ -49,8 +49,7 @@ afplay filename.mp3
 
 ## To Do
 
-- Create example audio editor
-- Create example video editor
-- Create hybrid editor
-- Figure out how to sync audio and video in time
-- Real editing and messing around.
+- separate-files.c
+  - Take command line arguments where appropriate
+- separate-streams.c
+  - Make a copy of `separate-files.c` to handle input and output to streams. It will probably be easiest to output first in real time. Then figure out inputs.
