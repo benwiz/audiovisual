@@ -9,7 +9,7 @@ The idea is to take a video feed and an audio feed (either from that same video 
 ## Requirements
 
 - ffmpeg
-- ffplay?
+- vlc (cli)
 
 ## Notes
 
@@ -58,3 +58,4 @@ afplay filename.mp3
   - Take command line arguments where appropriate
 - separate-streams.c
   - Make a copy of `separate-files.c` to handle input and output to streams. It will probably be easiest to output first in real time. Then figure out inputs.
+  - https://wiki.videolan.org/Uncommon_uses/
