@@ -56,8 +56,7 @@ afplay filename.mp3
 
 - separate-files.c
   - Take command line arguments where appropriate
-  - Audio isn't coming out same length as input
-  - Different length input audio and video is not behaving nicely for audio output
+  - Outputs are slightly different length than inputs. Probably a frame rate or sample rate issue.
 - separate-streams.c
   - Make a copy of `separate-files.c` to handle input and output to streams. It will probably be easiest to output first in real time. Then figure out inputs.
   - https://wiki.videolan.org/Uncommon_uses/
