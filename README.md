@@ -64,3 +64,5 @@ afplay filename.mp3
   - This leads somewhere `ffmpeg -i input.avi <options> -f matroska - | ffplay -`
   - https://stackoverflow.com/questions/10126715/how-to-encode-a-video-file-for-real-time-streaming-and-deliver-it-through-udp-da
   - Or maybe I can just render the video and audio. That would work then plug compute into HDMI. That's reasonable.
+  - http://nullprogram.com/blog/2017/11/03/
+  - MUXING! https://github.com/FFmpeg/FFmpeg/blob/master/doc/examples/remuxing.c
