@@ -29,5 +29,5 @@ int main()
     pclose(pipein);
     pclose(pipeout);
 
-    return 1;
+    return 0;
 }

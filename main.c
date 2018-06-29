@@ -37,28 +37,28 @@ int main()
         audio_count = fread(&audio_sample, 2, 1, audio_pipein); // read one 2-byte audio_sample
         if (audio_count != 1)
         {
-            printf("\n\nAudio break\n");
-            break;
+            ++audio_n;
+            audio_sample = audio_sample * sin(audio_n * 5.0 * 2 * M_PI / 44100.0);
+            fwrite(&audio_sample, 2, 1, audio_pipeout);
         }
-        ++audio_n;
-        audio_sample = audio_sample * sin(audio_n * 5.0 * 2 * M_PI / 44100.0);
-        fwrite(&audio_sample, 2, 1, audio_pipeout);
 
         // Video
         video_count = fread(video_frame, 1, H * W * 3, video_pipein); // Read a frame from the input pipe into the buffer
-        if (video_count != H * W * 3)                                 // If we didn't get a frame of video, we're probably at the end
+        if (video_count == H * W * 3)                                 // Only modify and write if frame exists
         {
-            printf("\n\nVideo break\n");
-            break;
+            for (y = 0; y < H; ++y)     // Process this frame
+                for (x = 0; x < W; ++x) // Invert each colour component in every pixel
+                {
+                    video_frame[y][x][0] = 255 - video_frame[y][x][0]; // red
+                    video_frame[y][x][1] = 255 - video_frame[y][x][1]; // green
+                    video_frame[y][x][2] = 255 - video_frame[y][x][2]; // blue
+                }
+            fwrite(video_frame, 1, H * W * 3, video_pipeout); // Write this frame to the output pipe
         }
-        for (y = 0; y < H; ++y)     // Process this frame
-            for (x = 0; x < W; ++x) // Invert each colour component in every pixel
-            {
-                video_frame[y][x][0] = 255 - video_frame[y][x][0]; // red
-                video_frame[y][x][1] = 255 - video_frame[y][x][1]; // green
-                video_frame[y][x][2] = 255 - video_frame[y][x][2]; // blue
-            }
-        fwrite(video_frame, 1, H * W * 3, video_pipeout); // Write this frame to the output pipe
+
+        // Break if both complete
+        if (audio_count != 1 && video_count != H * W * 3)
+            break;
     }
 
     // Close audio pipes
@@ -71,5 +71,5 @@ int main()
     pclose(video_pipein);
     pclose(video_pipeout);
 
-    return 1;
+    return 0;
 }

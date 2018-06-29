@@ -45,5 +45,5 @@ int main()
     fflush(pipeout);
     pclose(pipeout);
 
-    return 1;
+    return 0;
 }
