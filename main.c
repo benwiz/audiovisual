@@ -35,7 +35,7 @@ int main()
     {
         // Audio
         audio_count = fread(&audio_sample, 2, 1, audio_pipein); // read one 2-byte audio_sample
-        if (audio_count != 1)
+        if (audio_count == 1)
         {
             ++audio_n;
             audio_sample = audio_sample * sin(audio_n * 5.0 * 2 * M_PI / 44100.0);
