@@ -28,10 +28,20 @@ Services:
 - Codec Details
 - Frame Rate (daft-punk.mp4 is 23.976024)
 
+### Build and execute C program
+
+```bash
+cc -o filename.out filepath.c
+```
+
+```bash
+./filename.c
+```
+
 ## To Do
 
-- Figure out how to AudioDecode or video Demux the packets
-- Then figure out how to re-encode and re-mux them and hopefully play/display in real time (probably via a streaming server)
-- Decide if I have to switch to C 
-  - https://batchloaf.wordpress.com/2017/02/10/a-simple-way-to-read-and-write-audio-and-video-files-in-c-using-ffmpeg/
-  - https://batchloaf.wordpress.com/2017/02/12/a-simple-way-to-read-and-write-audio-and-video-files-in-c-using-ffmpeg-part-2-video/
+- Create example audio editor
+- Create example video editor
+- Create hybrid editor
+- Figure out how to sync audio and video in time
+- Real editing and messing around.
