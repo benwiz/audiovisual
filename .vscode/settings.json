@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "bashrc": "shellscript",
+        "bash_profile": "shellscript",
+        "bash_alias": "shellscript",
+        "cronfile": "shellscript",
+        ".bash_alias": "shellscript",
+        "*.config": "yaml",
+        "*.html": "html",
+        "__locale": "c",
+        "ios": "c"
+    }
+}
