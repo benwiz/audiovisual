@@ -4,8 +4,8 @@
 
 int main()
 {
-    // Launch two instances of FFmpeg, one to read the original WAV
-    // file and another to write the modified WAV file. In each case,
+    // Launch two instances of FFmpeg, one to read the original audio
+    // file and another to write the modified audio file. In each case,
     // data passes between this program and FFmpeg through a pipe.
     FILE *pipein;
     FILE *pipeout;
