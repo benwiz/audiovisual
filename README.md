@@ -62,3 +62,5 @@ afplay filename.mp3
   - https://wiki.videolan.org/Uncommon_uses/
   - I _think_ the solution is to stream both the audio and visual to `udp://` addresses. Then those can be consumed by VLC player!
   - This leads somewhere `ffmpeg -i input.avi <options> -f matroska - | ffplay -`
+  - https://stackoverflow.com/questions/10126715/how-to-encode-a-video-file-for-real-time-streaming-and-deliver-it-through-udp-da
+  - Or maybe I can just render the video and audio. That would work then plug compute into HDMI. That's reasonable.
