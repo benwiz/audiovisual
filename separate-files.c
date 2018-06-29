@@ -39,7 +39,7 @@ int main()
     // Video vars
     int x = 0;
     int y = 0;
-    int video_count = 0;
+    int video_count;
 
     // Read, modify, and write one audio_sample and video_frame at a time
     while (1)

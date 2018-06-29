@@ -20,8 +20,8 @@ int main()
     FILE *audio_pipeout = popen("ffmpeg -y -f s16le -ar 44100 -ac 1 -i - out/daft-punk.mp3", "w"); // TODO: Output to screen, vlc, or alternate source
 
     // Video pipes
-    FILE *video_pipein = popen("ffmpeg -i data/daft-punk.mp4 -f image2pipe -vcodec rawvideo -pix_fmt rgb24 -", "r");                                                    // TODO: Consume from webcam or alternate source
-    FILE *video_pipeout = popen("ffmpeg -y -f rawvideo -vcodec rawvideo -pix_fmt rgb24 -s 1280x720 -r 25 -i - -f mp4 -q:v 5 -an -vcodec mpeg4 out/daft-punk.mp4", "w"); // TODO: Output to speakers or alternate source
+    FILE *video_pipein = popen("ffmpeg -i data/daft-punk.mp4 -f image2pipe -vcodec rawvideo -pix_fmt rgb24 -", "r"); // TODO: Consume from webcam or alternate source
+    FILE *video_pipeout = popen("ffmpeg -y -f rawvideo -vcodec rawvideo -pix_fmt rgb24 -s 1280x720 -r 25 -i - -f mp4 -q:v 5 -an -vcodec mpeg4 out/daft-punk.mp4", "w");
 
     // Audio vars
     int16_t audio_sample;

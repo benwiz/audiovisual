@@ -9,7 +9,7 @@ The idea is to take a video feed and an audio feed (either from that same video 
 ## Requirements
 
 - ffmpeg
-- vlc (cli)
+- vlc or ffplay?
 
 ## Notes
 
@@ -56,6 +56,10 @@ afplay filename.mp3
 
 - separate-files.c
   - Take command line arguments where appropriate
+  - Audio isn't coming out same length as input
+  - Different length input audio and video is not behaving nicely for audio output
 - separate-streams.c
   - Make a copy of `separate-files.c` to handle input and output to streams. It will probably be easiest to output first in real time. Then figure out inputs.
   - https://wiki.videolan.org/Uncommon_uses/
+  - I _think_ the solution is to stream both the audio and visual to `udp://` addresses. Then those can be consumed by VLC player!
+  - This leads somewhere `ffmpeg -i input.avi <options> -f matroska - | ffplay -`
