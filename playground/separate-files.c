@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 /*
- * main.c
+ * separate-files.c
  *
  * This file consumes an audio file (or audio from a video file) and
  * a video file. It transforms the data from each and outputs each separately.

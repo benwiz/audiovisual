@@ -65,5 +65,5 @@ afplay filename.mp3
 
 - main.c
   - Output to a single file
+    - FFMPEG can take two inputs! `ffmpeg -i input_0.mp4 -i input_1.mp4` (https://stackoverflow.com/questions/12938581/ffmpeg-mux-video-and-audio-from-another-video-mapping-issue)
   - Then figure out how to output to screen, likely using `ffplay`
-  - FFMPEG can take two inputs! `ffmpeg -i input_0.mp4 -i input_1.mp4` (https://stackoverflow.com/questions/12938581/ffmpeg-mux-video-and-audio-from-another-video-mapping-issue)
