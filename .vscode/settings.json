@@ -14,6 +14,7 @@
         "chrono": "c",
         "iterator": "c",
         "string": "c",
-        "string_view": "c"
+        "string_view": "c",
+        "avformat.h": "c"
     }
 }

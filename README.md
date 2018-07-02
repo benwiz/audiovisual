@@ -22,8 +22,10 @@ The idea is to take a video feed and an audio feed (either from that same video 
 
 ### Build and execute C program
 
+https://stackoverflow.com/questions/51139736/error-inclunding-libavformat-avformat-h-in-ffmpeg-project-on-a-mac-using-clang#51139809
+
 ```bash
-cc -o filename.out filepath.c
+cc -o filename.out filepath.c -lavformat
 ```
 
 ```bash

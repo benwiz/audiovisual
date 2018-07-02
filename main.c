@@ -1,88 +1,180 @@
-#include <math.h>
-#include <stdint.h>
-#include <stdio.h>
+// Copied from https://github.com/FFmpeg/FFmpeg/blob/master/doc/examples/remuxing.c
 
-/*
- * main.c
- *
- * This file consumes an audio file (or audio from a video file) and
- * a video file. It transforms the data from each and outputs each separately.
- * This could be valuable if I really am getting data from two separate
- * sources and want to output to two separate sources.
- *
- * TODO:
- * - Command line arguments for inputs configus (filename, sample rate, video size, etc.)
- */
+#include <libavutil/timestamp.h>
+#include <libavformat/avformat.h>
 
-// Video resolution
-#define W 1280
-#define H 720
-
-// Allocate a buffer to store one video frame
-unsigned char video_frame[H][W][3] = {0};
-
-int main()
+static void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt, const char *tag)
 {
-    // Audio pipes
-    FILE *audio_pipein = popen("ffmpeg -i data/daft-punk.mp3 -f s16le -ac 1 -", "r");
-    FILE *audio_pipeout = popen("ffmpeg -y -f s16le -ar 44100 -ac 1 -i - out/daft-punk.mp3", "w");
+    AVRational *time_base = &fmt_ctx->streams[pkt->stream_index]->time_base;
 
-    // Video pipes
-    FILE *video_pipein = popen("ffmpeg -i data/daft-punk.mp4 -f image2pipe -vcodec rawvideo -pix_fmt rgb24 -", "r");
-    FILE *video_pipeout = popen("ffmpeg -y -f rawvideo -vcodec rawvideo -pix_fmt rgb24 -s 1280x720 -r 25 -i - -f mp4 -q:v 5 -an -vcodec mpeg4 out/daft-punk.mp4", "w");
+    printf("%s: pts:%s pts_time:%s dts:%s dts_time:%s duration:%s duration_time:%s stream_index:%d\n",
+           tag,
+           av_ts2str(pkt->pts), av_ts2timestr(pkt->pts, time_base),
+           av_ts2str(pkt->dts), av_ts2timestr(pkt->dts, time_base),
+           av_ts2str(pkt->duration), av_ts2timestr(pkt->duration, time_base),
+           pkt->stream_index);
+}
 
-    // Audio vars
-    int16_t audio_sample;
-    int audio_count;
-    int audio_n = 0;
+int main(int argc, char **argv)
+{
+    AVOutputFormat *ofmt = NULL;
+    AVFormatContext *ifmt_ctx = NULL, *ofmt_ctx = NULL;
+    AVPacket pkt;
+    const char *in_filename, *out_filename;
+    int ret, i;
+    int stream_index = 0;
+    int *stream_mapping = NULL;
+    int stream_mapping_size = 0;
 
-    // Video vars
-    int x = 0;
-    int y = 0;
-    int video_count;
-
-    // Read, modify, and write one audio_sample and video_frame at a time
-    while (1)
+    if (argc < 3)
     {
-        // Audio
-        audio_count = fread(&audio_sample, 2, 1, audio_pipein); // read one 2-byte audio_sample
-        if (audio_count == 1)
-        {
-            ++audio_n;
-            audio_sample = audio_sample * sin(audio_n * 5.0 * 2 * M_PI / 44100.0);
-            fwrite(&audio_sample, 2, 1, audio_pipeout);
-        }
-
-        // Video
-        video_count = fread(video_frame, 1, H * W * 3, video_pipein); // Read a frame from the input pipe into the buffer
-        if (video_count == H * W * 3)                                 // Only modify and write if frame exists
-        {
-            for (y = 0; y < H; ++y)
-                for (x = 0; x < W; ++x)
-                {
-                    // Invert each colour component in every pixel
-                    video_frame[y][x][0] = 255 - video_frame[y][x][0]; // red
-                    video_frame[y][x][1] = 255 - video_frame[y][x][1]; // green
-                    video_frame[y][x][2] = 255 - video_frame[y][x][2]; // blue
-                }
-            // Write this frame to the output pipe
-            fwrite(video_frame, 1, H * W * 3, video_pipeout);
-        }
-
-        // Break if both complete
-        if (audio_count != 1 && video_count != H * W * 3)
-            break;
+        printf("usage: %s input output\n"
+               "API example program to remux a media file with libavformat and libavcodec.\n"
+               "The output format is guessed according to the file extension.\n"
+               "\n",
+               argv[0]);
+        return 1;
     }
 
-    // Close audio pipes
-    pclose(audio_pipein);
-    pclose(audio_pipeout);
+    in_filename = argv[1];
+    out_filename = argv[2];
 
-    // Close video pipes
-    fflush(video_pipein);
-    fflush(video_pipeout);
-    pclose(video_pipein);
-    pclose(video_pipeout);
+    if ((ret = avformat_open_input(&ifmt_ctx, in_filename, 0, 0)) < 0)
+    {
+        fprintf(stderr, "Could not open input file '%s'", in_filename);
+        goto end;
+    }
+
+    if ((ret = avformat_find_stream_info(ifmt_ctx, 0)) < 0)
+    {
+        fprintf(stderr, "Failed to retrieve input stream information");
+        goto end;
+    }
+
+    av_dump_format(ifmt_ctx, 0, in_filename, 0);
+
+    avformat_alloc_output_context2(&ofmt_ctx, NULL, NULL, out_filename);
+    if (!ofmt_ctx)
+    {
+        fprintf(stderr, "Could not create output context\n");
+        ret = AVERROR_UNKNOWN;
+        goto end;
+    }
+
+    stream_mapping_size = ifmt_ctx->nb_streams;
+    stream_mapping = av_mallocz_array(stream_mapping_size, sizeof(*stream_mapping));
+    if (!stream_mapping)
+    {
+        ret = AVERROR(ENOMEM);
+        goto end;
+    }
+
+    ofmt = ofmt_ctx->oformat;
+
+    for (i = 0; i < ifmt_ctx->nb_streams; i++)
+    {
+        AVStream *out_stream;
+        AVStream *in_stream = ifmt_ctx->streams[i];
+        AVCodecParameters *in_codecpar = in_stream->codecpar;
+
+        if (in_codecpar->codec_type != AVMEDIA_TYPE_AUDIO &&
+            in_codecpar->codec_type != AVMEDIA_TYPE_VIDEO &&
+            in_codecpar->codec_type != AVMEDIA_TYPE_SUBTITLE)
+        {
+            stream_mapping[i] = -1;
+            continue;
+        }
+
+        stream_mapping[i] = stream_index++;
+
+        out_stream = avformat_new_stream(ofmt_ctx, NULL);
+        if (!out_stream)
+        {
+            fprintf(stderr, "Failed allocating output stream\n");
+            ret = AVERROR_UNKNOWN;
+            goto end;
+        }
+
+        ret = avcodec_parameters_copy(out_stream->codecpar, in_codecpar);
+        if (ret < 0)
+        {
+            fprintf(stderr, "Failed to copy codec parameters\n");
+            goto end;
+        }
+        out_stream->codecpar->codec_tag = 0;
+    }
+    av_dump_format(ofmt_ctx, 0, out_filename, 1);
+
+    if (!(ofmt->flags & AVFMT_NOFILE))
+    {
+        ret = avio_open(&ofmt_ctx->pb, out_filename, AVIO_FLAG_WRITE);
+        if (ret < 0)
+        {
+            fprintf(stderr, "Could not open output file '%s'", out_filename);
+            goto end;
+        }
+    }
+
+    ret = avformat_write_header(ofmt_ctx, NULL);
+    if (ret < 0)
+    {
+        fprintf(stderr, "Error occurred when opening output file\n");
+        goto end;
+    }
+
+    while (1)
+    {
+        AVStream *in_stream, *out_stream;
+
+        ret = av_read_frame(ifmt_ctx, &pkt);
+        if (ret < 0)
+            break;
+
+        in_stream = ifmt_ctx->streams[pkt.stream_index];
+        if (pkt.stream_index >= stream_mapping_size ||
+            stream_mapping[pkt.stream_index] < 0)
+        {
+            av_packet_unref(&pkt);
+            continue;
+        }
+
+        pkt.stream_index = stream_mapping[pkt.stream_index];
+        out_stream = ofmt_ctx->streams[pkt.stream_index];
+        log_packet(ifmt_ctx, &pkt, "in");
+
+        /* copy packet */
+        pkt.pts = av_rescale_q_rnd(pkt.pts, in_stream->time_base, out_stream->time_base, AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
+        pkt.dts = av_rescale_q_rnd(pkt.dts, in_stream->time_base, out_stream->time_base, AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
+        pkt.duration = av_rescale_q(pkt.duration, in_stream->time_base, out_stream->time_base);
+        pkt.pos = -1;
+        log_packet(ofmt_ctx, &pkt, "out");
+
+        ret = av_interleaved_write_frame(ofmt_ctx, &pkt);
+        if (ret < 0)
+        {
+            fprintf(stderr, "Error muxing packet\n");
+            break;
+        }
+        av_packet_unref(&pkt);
+    }
+
+    av_write_trailer(ofmt_ctx);
+end:
+
+    avformat_close_input(&ifmt_ctx);
+
+    /* close output */
+    if (ofmt_ctx && !(ofmt->flags & AVFMT_NOFILE))
+        avio_closep(&ofmt_ctx->pb);
+    avformat_free_context(ofmt_ctx);
+
+    av_freep(&stream_mapping);
+
+    if (ret < 0 && ret != AVERROR_EOF)
+    {
+        fprintf(stderr, "Error occurred: %s\n", av_err2str(ret));
+        return 1;
+    }
 
     return 0;
 }
