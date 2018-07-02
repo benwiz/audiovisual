@@ -15,6 +15,8 @@
         "iterator": "c",
         "string": "c",
         "string_view": "c",
-        "avformat.h": "c"
+        "avformat.h": "c",
+        "timestamp.h": "c",
+        "locale": "c"
     }
 }

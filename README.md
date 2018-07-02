@@ -62,10 +62,8 @@ afplay filename.mp3
 - MUXING! https://github.com/FFmpeg/FFmpeg/blob/master/doc/examples/remuxing.c
 - `ffmpeg -i input.avi <options> -f matroska - | ffplay -`
 - https://stackoverflow.com/questions/40677951/how-to-merge-audio-to-video-through-ffmpeg-c-api
+- http://dranger.com/ffmpeg/tutorial01.html
 
 ## To Do
 
-- main.c
-  - Output to a single file
-    - FFMPEG can take two inputs! `ffmpeg -i input_0.mp4 -i input_1.mp4` (https://stackoverflow.com/questions/12938581/ffmpeg-mux-video-and-audio-from-another-video-mapping-issue)
-  - Then figure out how to output to screen, likely using `ffplay`
+- Use [this example](https://github.com/FFmpeg/FFmpeg/blob/master/doc/examples/decode_video.c#L158-L173) to get frames

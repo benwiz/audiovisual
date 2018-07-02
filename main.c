@@ -3,6 +3,51 @@
 #include <libavutil/timestamp.h>
 #include <libavformat/avformat.h>
 
+/*
+ * Notes on trying to decode video:
+ *  - I may be creating the `video_dec_ctx` incorrectly
+ *  - Should read this in full https://www.ffmpeg.org/doxygen/3.4/group__lavc__encdec.html
+ *
+ */
+
+// Start: Additions
+static void decode_video(AVCodecContext *video_dec_ctx, AVFrame *frame, AVPacket *pkt)
+{
+    char buf[1024];
+    int ret;
+
+    ret = avcodec_send_packet(video_dec_ctx, pkt);
+    if (ret < 0)
+    {
+        fprintf(stderr, "Error sending a packet for decoding: %d\n", ret);
+        exit(1);
+    }
+
+    while (ret >= 0)
+    {
+        ret = avcodec_receive_frame(video_dec_ctx, frame);
+        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+            return;
+        else if (ret < 0)
+        {
+            fprintf(stderr, "Error during decoding\n");
+            exit(1);
+        }
+
+        fflush(stdout); // I guess?
+
+        printf("number: %d\n data: %s\nlinesize: %d\nwidth: %d\n height: %d\n------\n",
+               video_dec_ctx->frame_number, frame->data[0], frame->linesize[0], frame->width, frame->height);
+    }
+}
+
+static void edit_packet(AVCodecContext *video_dec_ctx, AVFrame *frame, AVPacket *pkt)
+{
+    decode_video(video_dec_ctx, frame, pkt);
+    // TODO: Encode video back into packet, I think
+}
+// End: Additions
+
 static void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt, const char *tag)
 {
     AVRational *time_base = &fmt_ctx->streams[pkt->stream_index]->time_base;
@@ -25,6 +70,12 @@ int main(int argc, char **argv)
     int stream_index = 0;
     int *stream_mapping = NULL;
     int stream_mapping_size = 0;
+
+    // Start: Additions
+    AVFrame *frame;
+    const AVCodec *codec;
+    AVCodecContext *video_dec_ctx = NULL;
+    // End: Additions
 
     if (argc < 3)
     {
@@ -122,6 +173,29 @@ int main(int argc, char **argv)
         goto end;
     }
 
+    // Start: Additions
+    codec = avcodec_find_decoder(AV_CODEC_ID_MPEG1VIDEO);
+    if (!codec)
+    {
+        fprintf(stderr, "Codec not found\n");
+        exit(1);
+    }
+
+    video_dec_ctx = avcodec_alloc_context3(codec);
+    if (!video_dec_ctx)
+    {
+        fprintf(stderr, "Could not allocate video codec context\n");
+        exit(1);
+    }
+
+    frame = av_frame_alloc();
+    if (!frame)
+    {
+        fprintf(stderr, "Could not allocate video frame\n");
+        exit(1);
+    }
+    // End: Additions
+
     while (1)
     {
         AVStream *in_stream, *out_stream;
@@ -140,14 +214,17 @@ int main(int argc, char **argv)
 
         pkt.stream_index = stream_mapping[pkt.stream_index];
         out_stream = ofmt_ctx->streams[pkt.stream_index];
-        log_packet(ifmt_ctx, &pkt, "in");
+        // log_packet(ifmt_ctx, &pkt, "in");
 
-        /* copy packet */
+        // copy packet
         pkt.pts = av_rescale_q_rnd(pkt.pts, in_stream->time_base, out_stream->time_base, AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
         pkt.dts = av_rescale_q_rnd(pkt.dts, in_stream->time_base, out_stream->time_base, AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
         pkt.duration = av_rescale_q(pkt.duration, in_stream->time_base, out_stream->time_base);
         pkt.pos = -1;
-        log_packet(ofmt_ctx, &pkt, "out");
+        // log_packet(ofmt_ctx, &pkt, "out");
+
+        // edit packet
+        edit_packet(video_dec_ctx, frame, &pkt);
 
         ret = av_interleaved_write_frame(ofmt_ctx, &pkt);
         if (ret < 0)
