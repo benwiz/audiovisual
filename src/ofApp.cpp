@@ -17,6 +17,8 @@ void ofApp::setup(){
   //setup ofxAudioAnalyzer with the SAME PARAMETERS
   audioAnalyzer.setup(sampleRate, bufferSize, inChannels);
 
+  // Init onset
+  onset = false;
 }
 
 //--------------------------------------------------------------
@@ -28,6 +30,8 @@ void ofApp::update(){
   rms_l = audioAnalyzer.getValue(RMS, 0, smooth);
   rms_r = audioAnalyzer.getValue(RMS, 1, smooth);
 
+  // Onset
+  onset = audioAnalyzer.getOnsetValue(0);
 }
 
 //--------------------------------------------------------------
@@ -52,10 +56,22 @@ void ofApp::draw(){
   "\nSmoothing (mouse x): " + ofToString(smooth);
 
   ofDrawBitmapString(infoString, 32, 579);
+
+  // Draw onset
+  if (onset){
+    ofSetColor(ofColor::cyan);
+    ofDrawCircle(ofGetWidth()/4, ofGetHeight()/4, 200);
+  }
 }
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer &inBuffer){
   //ANALYZE SOUNDBUFFER:
+
+  float alpha = 0.5; // [0, 1.0]
+  float silenceThreshold = 0.2; // [0, 1.0]
+  float timeThreshold = 100.0; // [0, 1000.0]
+  bool useTimeThreshold = false;
+  audioAnalyzer.setOnsetsParameters(0, alpha, silenceThreshold, timeThreshold, useTimeThreshold);
   audioAnalyzer.analyze(inBuffer);
 }
 

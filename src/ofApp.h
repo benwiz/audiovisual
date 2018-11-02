@@ -28,4 +28,6 @@ public:
 
   float rms_l, rms_r;
   float smooth;
+
+  bool onset;
 };
