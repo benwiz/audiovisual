@@ -13,7 +13,7 @@ public:
 
   void setup(float w, float h);
   void recordOnset(float magnitude, float pitch);
-  void update();
+  void preprocess();
   void draw();
 
 private:

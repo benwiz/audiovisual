@@ -11,14 +11,15 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-  scribe.update();
-  canvas.update();
+  scribe.update(); // Update canvas before preprocessing canvas stage
+  canvas.preprocess();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-  scribe.draw();
+  cout << "draw" << endl;
   canvas.draw();
+  scribe.draw();
 }
 
 //--------------------------------------------------------------

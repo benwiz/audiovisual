@@ -22,9 +22,9 @@ void Canvas::recordOnset(float magnitude, float pitch) {
   onsets.push_back(onset);
 }
 
-void Canvas::update() {
-  // Here is where any preprocessing would happen. If any preprocessing is done
-  // here, it should create a new vector causing draw() to need to be updated.
+void Canvas::preprocess() {
+  // Here is where any preprocessing would happen. If any preprocessing is done,
+  // we should create a new vector causing draw() to need to be updated.
 }
 
 void Canvas::drawOnsets() {
@@ -53,4 +53,6 @@ void Canvas::draw() {
 
   // Untranslate
   ofPopMatrix();
+}
+
 }
