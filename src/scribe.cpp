@@ -50,7 +50,7 @@ void Scribe::update() {
   // Onset
   onset = audioAnalyzer.getOnsetValue(0);
 
-  // RMS
+  // Centroid and pitchSalience
   int channel = 0;
   float smoothAmount = 0.0; // [0, 1]
   centroid = audioAnalyzer.getValue(CENTROID, channel, smoothAmount, false);
@@ -60,20 +60,16 @@ void Scribe::update() {
 
 //--------------------------------------------------------------
 void Scribe::draw() {
-
+  // Bouncing circle
   ofSetColor(ofColor::cyan);
-
   float xpos = ofGetWidth() * .5;
   float ypos = ofGetHeight() - ofGetHeight() * rms_r;
   float radius = 5 + 100 * rms_l;
-
   ofDrawCircle(xpos, ypos, radius);
 
-  //----------------
-
+  // Text
   ofSetColor(225);
   ofDrawBitmapString("ofxAudioAnalyzer - RMS SMOOTHING INPUT EXAMPLE", 32, 32);
-
   string infoString =
       "RMS Left: " + ofToString(rms_l) + "\nRMS Right: " + ofToString(rms_r) +
       "\nSmoothing (mouse x): " + ofToString(smooth) + "\nCentroid: " +
@@ -82,7 +78,7 @@ void Scribe::draw() {
 
   ofDrawBitmapString(infoString, 32, 570);
 
-  // Draw onset
+  // Onset
   if (onset) {
     ofSetColor(ofColor::cyan);
     ofDrawCircle(ofGetWidth() / 4, ofGetHeight() / 4, 200);
@@ -90,8 +86,6 @@ void Scribe::draw() {
 }
 //--------------------------------------------------------------
 void Scribe::audioIn(ofSoundBuffer &inBuffer) {
-  // ANALYZE SOUNDBUFFER:
-
   int channel = 0;
   float alpha = 0.5;            // [0, 1.0]
   float silenceThreshold = 0.2; // [0, 1.0]
