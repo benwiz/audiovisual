@@ -11,16 +11,11 @@ Scribe::Scribe() {}
 
 //--------------------------------------------------------------
 void Scribe::setup() {
-
-  ofBackground(34, 34, 34);
-  ofSetFrameRate(60);
-
+  // Setup the sound stream. Idk why the proper way isn't working.
   int sampleRate = 44100;
   int bufferSize = 512;
   int outChannels = 0;
   int inChannels = 2;
-
-  // Setup the sound stream. Idk why the proper way isn't working.
   //  ofSoundStreamSettings soundStreamSettings;
   //  soundStreamSettings.numOutputChannels = outChannels;
   //  soundStreamSettings.numInputChannels = inChannels;

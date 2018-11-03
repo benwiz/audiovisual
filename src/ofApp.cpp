@@ -2,26 +2,34 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+  ofBackground(34, 34, 34);
+  ofSetFrameRate(60);
+
+  // Scribe
   scribe.setup();
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-  scribe.update();;
+  // Scribe
+  scribe.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+  // Scribe
   scribe.draw();
 }
 
 //--------------------------------------------------------------
 void ofApp::exit() {
+  // Scribe
   scribe.exit();
 }
 
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer &inBuffer) {
+  // Scribe
   scribe.audioIn(inBuffer);
 }
 
