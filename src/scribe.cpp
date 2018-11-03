@@ -10,7 +10,7 @@
 Scribe::Scribe() {}
 
 //--------------------------------------------------------------
-void Scribe::setup(Canvas canvas) {
+void Scribe::setup(Canvas *canvas) {
   this->canvas = canvas;
 
   // Setup the sound stream. Idk why the proper way isn't working.
@@ -58,14 +58,16 @@ void Scribe::update() {
   pitchSalience = audioAnalyzer.getValue(PITCH_SALIENCE, 0, smoothAmount);
 
   // Pass onset info to canvas
-  canvas.recordOnset(rms, pitchSalience);
+  if (onset) {
+    canvas->recordOnset(rms, pitchSalience);
+  }
 }
 
 //--------------------------------------------------------------
 // Do any non-essential drawing
 void Scribe::draw() {
   // Text
-  ofSetColor(225);
+  ofSetColor(10);
   string infoString = "RMS Left: " + ofToString(rmsL) + "\nRMS Right: " +
                       ofToString(rmsR) + "\nRMS: " + ofToString(rms) +
                       "\nCentroid: " + ofToString(centroid) +

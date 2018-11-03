@@ -13,7 +13,7 @@ class Scribe {
 public:
   Scribe();
 
-  void setup(Canvas canvas);
+  void setup(Canvas *canvas);
   void update();
   void draw();
   void exit();
@@ -21,7 +21,7 @@ public:
   void audioIn(ofSoundBuffer &inBuffer);
 
 private:
-  Canvas canvas;
+  Canvas *canvas;
 
   ofSoundStream soundStream;
   ofxAudioAnalyzer audioAnalyzer;

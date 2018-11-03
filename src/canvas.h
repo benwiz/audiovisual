@@ -17,7 +17,7 @@ public:
   void draw();
 
 private:
-  void drawOnsets();
+  void drawOnsets(vector<vector<float>> onsets);
 
   float w;
   float h;

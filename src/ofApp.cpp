@@ -6,7 +6,7 @@ void ofApp::setup() {
   ofSetFrameRate(60);
 
   canvas.setup(ofGetWidth() * 0.9, ofGetHeight() * 0.9);
-  scribe.setup(canvas);
+  scribe.setup(&canvas);
 }
 
 //--------------------------------------------------------------
@@ -17,7 +17,6 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-  cout << "draw" << endl;
   canvas.draw();
   scribe.draw();
 }
