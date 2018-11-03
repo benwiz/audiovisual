@@ -44,8 +44,8 @@ void Scribe::update() {
   smooth = ofClamp(ofGetMouseX() / (float)ofGetWidth(), 0.0, 1.0);
 
   // Get the analysis values
-  rms_l = audioAnalyzer.getValue(RMS, 0, smooth);
-  rms_r = audioAnalyzer.getValue(RMS, 1, smooth);
+  rmsL = audioAnalyzer.getValue(RMS, 0, smooth);
+  rmsR = audioAnalyzer.getValue(RMS, 1, smooth);
 
   // Onset
   onset = audioAnalyzer.getOnsetValue(0);
@@ -63,15 +63,15 @@ void Scribe::draw() {
   // Bouncing circle
   ofSetColor(ofColor::cyan);
   float xpos = ofGetWidth() * .5;
-  float ypos = ofGetHeight() - ofGetHeight() * rms_r;
-  float radius = 5 + 100 * rms_l;
+  float ypos = ofGetHeight() - ofGetHeight() * rmsR;
+  float radius = 5 + 100 * rmsL;
   ofDrawCircle(xpos, ypos, radius);
 
   // Text
   ofSetColor(225);
   ofDrawBitmapString("ofxAudioAnalyzer - RMS SMOOTHING INPUT EXAMPLE", 32, 32);
   string infoString =
-      "RMS Left: " + ofToString(rms_l) + "\nRMS Right: " + ofToString(rms_r) +
+      "RMS Left: " + ofToString(rmsL) + "\nRMS Right: " + ofToString(rmsR) +
       "\nSmoothing (mouse x): " + ofToString(smooth) + "\nCentroid: " +
       ofToString(centroid) + "\nCentroid Norm: " + ofToString(centroidNorm) +
       "\nPitchSalience: " + ofToString(pitchSalience);

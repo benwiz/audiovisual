@@ -23,7 +23,7 @@ private:
   ofSoundStream soundStream;
   ofxAudioAnalyzer audioAnalyzer;
 
-  float rms_l, rms_r;
+  float rmsL, rmsR;
   float smooth;
 
   bool onset;
