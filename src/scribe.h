@@ -6,13 +6,14 @@
 //
 
 #include "ofMain.h"
+#include "canvas.h"
 #include "ofxAudioAnalyzer.h"
 
 class Scribe {
 public:
   Scribe();
 
-  void setup();
+  void setup(Canvas canvas);
   void update();
   void draw();
   void exit();
@@ -20,12 +21,12 @@ public:
   void audioIn(ofSoundBuffer &inBuffer);
 
 private:
+  Canvas canvas;
+
   ofSoundStream soundStream;
   ofxAudioAnalyzer audioAnalyzer;
 
-  float rmsL, rmsR;
-  float smooth;
-
+  float rmsL, rmsR, rms;
   bool onset;
   float centroid;
   float centroidNorm;

@@ -2,34 +2,32 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-  ofBackground(34, 34, 34);
+  ofBackground(ofColor::white);
   ofSetFrameRate(60);
 
-  // Scribe
-  scribe.setup();
+  canvas.setup(ofGetWidth() * 0.9, ofGetHeight() * 0.9);
+  scribe.setup(canvas);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-  // Scribe
   scribe.update();
+  canvas.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-  // Scribe
   scribe.draw();
+  canvas.draw();
 }
 
 //--------------------------------------------------------------
 void ofApp::exit() {
-  // Scribe
   scribe.exit();
 }
 
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer &inBuffer) {
-  // Scribe
   scribe.audioIn(inBuffer);
 }
 

@@ -10,75 +10,70 @@
 Scribe::Scribe() {}
 
 //--------------------------------------------------------------
-void Scribe::setup() {
+void Scribe::setup(Canvas canvas) {
+  this->canvas = canvas;
+
   // Setup the sound stream. Idk why the proper way isn't working.
   int sampleRate = 44100;
   int bufferSize = 512;
   int outChannels = 0;
   int inChannels = 2;
+  int numBuffers = 3;
   //  ofSoundStreamSettings soundStreamSettings;
   //  soundStreamSettings.numOutputChannels = outChannels;
   //  soundStreamSettings.numInputChannels = inChannels;
   //  soundStreamSettings.sampleRate = sampleRate;
   //  soundStreamSettings.bufferSize = bufferSize;
-  //  soundStreamSettings.numBuffers = 3;
+  //  soundStreamSettings.numBuffers = numBuffers;
   //  soundStream.setup(soundStreamSettings);
-  //  soundStream.setup(this, outChannels, inChannels, sampleRate, bufferSize, 3);
-  ofSoundStreamSetup(outChannels, inChannels, sampleRate, bufferSize, 3);
+  //  soundStream.setup(this, outChannels, inChannels, sampleRate, bufferSize,
+  //  numBuffers);
+  ofSoundStreamSetup(outChannels, inChannels, sampleRate, bufferSize,
+                     numBuffers);
 
-  // Setup ofxAudioAnalyzer with the SAME PARAMETERS
+  // Setup ofxAudioAnalyzer with the same parameters
   audioAnalyzer.setup(sampleRate, bufferSize, inChannels);
 
-  // Init onset
+  // Init onset variable
   onset = false;
 }
 
 //--------------------------------------------------------------
+// Run ofxAudioAnalyzer algorithms then pass to canvas.
 void Scribe::update() {
-
-  smooth = ofClamp(ofGetMouseX() / (float)ofGetWidth(), 0.0, 1.0);
-
   // Get the analysis values
-  rmsL = audioAnalyzer.getValue(RMS, 0, smooth);
-  rmsR = audioAnalyzer.getValue(RMS, 1, smooth);
+  float smoothAmount = 0.2;
+  rmsL = audioAnalyzer.getValue(RMS, 0, smoothAmount);
+  rmsR = audioAnalyzer.getValue(RMS, 1, smoothAmount);
+  rms = (rmsL + rmsR) / 2;
 
   // Onset
   onset = audioAnalyzer.getOnsetValue(0);
 
   // Centroid and pitchSalience
   int channel = 0;
-  float smoothAmount = 0.0; // [0, 1]
+  smoothAmount = 0.0; // [0, 1]
   centroid = audioAnalyzer.getValue(CENTROID, channel, smoothAmount, false);
   centroidNorm = audioAnalyzer.getValue(CENTROID, channel, smoothAmount, true);
   pitchSalience = audioAnalyzer.getValue(PITCH_SALIENCE, 0, smoothAmount);
+
+  // Pass onset info to canvas
+  canvas.recordOnset(rms, pitchSalience);
 }
 
 //--------------------------------------------------------------
+// Do any non-essential drawing
 void Scribe::draw() {
-  // Bouncing circle
-  ofSetColor(ofColor::cyan);
-  float xpos = ofGetWidth() * .5;
-  float ypos = ofGetHeight() - ofGetHeight() * rmsR;
-  float radius = 5 + 100 * rmsL;
-  ofDrawCircle(xpos, ypos, radius);
-
   // Text
   ofSetColor(225);
-  ofDrawBitmapString("ofxAudioAnalyzer - RMS SMOOTHING INPUT EXAMPLE", 32, 32);
-  string infoString =
-      "RMS Left: " + ofToString(rmsL) + "\nRMS Right: " + ofToString(rmsR) +
-      "\nSmoothing (mouse x): " + ofToString(smooth) + "\nCentroid: " +
-      ofToString(centroid) + "\nCentroid Norm: " + ofToString(centroidNorm) +
-      "\nPitchSalience: " + ofToString(pitchSalience);
-
+  string infoString = "RMS Left: " + ofToString(rmsL) + "\nRMS Right: " +
+                      ofToString(rmsR) + "\nRMS: " + ofToString(rms) +
+                      "\nCentroid: " + ofToString(centroid) +
+                      "\nCentroid Norm: " + ofToString(centroidNorm) +
+                      "\nPitchSalience: " + ofToString(pitchSalience);
   ofDrawBitmapString(infoString, 32, 570);
-
-  // Onset
-  if (onset) {
-    ofSetColor(ofColor::cyan);
-    ofDrawCircle(ofGetWidth() / 4, ofGetHeight() / 4, 200);
-  }
 }
+
 //--------------------------------------------------------------
 void Scribe::audioIn(ofSoundBuffer &inBuffer) {
   int channel = 0;

@@ -24,5 +24,6 @@ public:
   void gotMessage(ofMessage msg);
 
 private:
+  Canvas canvas;
   Scribe scribe;
 };
