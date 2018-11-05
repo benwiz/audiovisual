@@ -73,7 +73,7 @@ void Scribe::draw() {
                       "\nCentroid: " + ofToString(centroid) +
                       "\nCentroid Norm: " + ofToString(centroidNorm) +
                       "\nPitchSalience: " + ofToString(pitchSalience);
-  ofDrawBitmapString(infoString, 32, 570);
+  ofDrawBitmapString(infoString, 60, 590);
 }
 
 //--------------------------------------------------------------
