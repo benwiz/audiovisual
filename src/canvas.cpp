@@ -67,15 +67,15 @@ void Canvas::drawSpectrum(vector<float> spectrum) {
   float step = w / spectrum.size();
 
   ofPath path;
-  path.moveTo(x, y);
-  cout << spectrum.size() << endl;
+  path.moveTo(x, y - 50);
   for (int i = 0; i < spectrum.size(); i++) {
-    y = spectrum[i];
+    y = ofGetHeight() - 50 - spectrum[i] * 10;
     path.lineTo(x, y);
     cout << x << "\t" << y << endl;
     x += step;
   }
 
+  path.setFilled(false);
   path.setStrokeColor(ofColor::black);
   path.setStrokeWidth(2);
   path.draw();
