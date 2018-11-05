@@ -11,5 +11,9 @@
 
 ## To Do
 
-- Determine whether the onset is a low, mid, or high
-- Maybe I should use mel bands and each mel band (or set of mel bands) gets its own shape or row on a staff
+- Figure out the right way to organize the code base to explore different approaches
+
+- Approaches to try:
+  - Draw onsets with pitch (current setup)
+  - Draw melBands as if there were a staff and `if onset == true` emphasize it some way
+

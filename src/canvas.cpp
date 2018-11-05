@@ -61,17 +61,17 @@ void Canvas::drawOnsets(vector<vector<float>> onsets) {
 
 void Canvas::drawSpectrum(vector<float> spectrum) {
   float w = ofGetWidth() / 2;
-  float h = 50;
   float x = 0;
   float y = ofGetHeight();
+  float yOffset = 100;
   float step = w / spectrum.size();
+  float spectrumMultiplier = 10;
 
   ofPath path;
-  path.moveTo(x, y - 50);
+  path.moveTo(x, y - yOffset);
   for (int i = 0; i < spectrum.size(); i++) {
-    y = ofGetHeight() - 50 - spectrum[i] * 10;
+    y = ofGetHeight() - yOffset - abs(spectrum[i]) * spectrumMultiplier;
     path.lineTo(x, y);
-    cout << x << "\t" << y << endl;
     x += step;
   }
 
@@ -82,7 +82,25 @@ void Canvas::drawSpectrum(vector<float> spectrum) {
 }
 
 void Canvas::drawMelBands(vector<float> melBands) {
+  float w = ofGetWidth() / 2;
+  float x = ofGetWidth() / 2;
+  float y = ofGetHeight();
+  float yOffset = 100;
+  float step = w / melBands.size();
+  float bandMultiplier = 20;
 
+  ofPath path;
+  path.moveTo(x, y - yOffset);
+  for (int i = 0; i < melBands.size(); i++) {
+    y = ofGetHeight() - yOffset - abs(melBands[i]) * bandMultiplier;
+    path.lineTo(x, y);
+    x += step;
+  }
+
+  path.setFilled(false);
+  path.setStrokeColor(ofColor::black);
+  path.setStrokeWidth(2);
+  path.draw();
 }
 
 void Canvas::draw() {
