@@ -15,15 +15,13 @@ public:
   void recordOnset(float magnitude, float pitch);
   void preprocess();
   void draw();
+  void reset();
 
 private:
   void drawOnsets(vector<vector<float>> onsets);
 
   float w;
   float h;
-
-  float x;
-  float y;
 
   vector<vector<float>> onsets; // { [ms, magnitude, pitch], [...], ... }
 };

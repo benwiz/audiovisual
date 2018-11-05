@@ -12,8 +12,6 @@ Canvas::Canvas() {}
 void Canvas::setup(float w, float h) {
   this->w = w;
   this->h = h;
-  this->x = 0;
-  this->y = 0;
 }
 
 void Canvas::recordOnset(float magnitude, float pitch) {
@@ -28,44 +26,48 @@ void Canvas::preprocess() {
 }
 
 void Canvas::drawOnsets(vector<vector<float>> onsets) {
+  if (onsets.size() == 0) {
+    return;
+  }
+
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::black);
+  int firstMs = (int)onsets[0][0];
   for (vector<float> &onset : onsets) {
-    int ms = (int)onset[0];
+    int ms = (int)onset[0] - firstMs;
     float magnitude = onset[1];
     float pitch = onset[2];
 
-    // Starting off testing with 10s (10,000ms) to a line
-    ms = ms % 10000;
-    float xStep = ofMap(ms, 0, 1000, 0, w);
-    x += xStep;
-    if (x >= w) {
-      x = 0;
-    }
-    if (x == 0) {
-      // Increase by line height
-      y += 16;
-    }
+    // Calculate the step
+    int msPerRow = 10000;
+    int rowHeight = 16;
+    int xPos = ms % msPerRow;
+    float x = ofMap(xPos, 0, msPerRow, 0, w);
+    float y = ms / msPerRow * rowHeight;
 
     // Draw dot
+    // ofTranslate(x, y);
     cout << x << "\t" << y << endl;
     ofDrawCircle(x, y, 4);
   }
 }
 
 void Canvas::draw() {
-  // Translate
-  ofPushMatrix();
-  ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
+  //  // Translate
+  //  ofPushMatrix();
+  //  ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2);
 
   // Draw blank canvas
   ofSetColor(ofColor::lightGoldenRodYellow);
   ofSetRectMode(OF_RECTMODE_CENTER);
-  ofDrawRectangle(0, 0, w, h);
+  ofDrawRectangle(ofGetWidth() / 2, ofGetHeight() / 2, w, h);
 
   // Draw all onsets (potential memory issue here)
   drawOnsets(onsets);
 
-  // Untranslate
-  ofPopMatrix();
+  //  // Untranslate
+  //  ofPopMatrix();
 }
+
+void Canvas::reset() { onsets.clear(); }
+

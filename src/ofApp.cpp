@@ -32,7 +32,11 @@ void ofApp::audioIn(ofSoundBuffer &inBuffer) {
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key) {}
+void ofApp::keyPressed(int key) {
+  if (key == ' ') {
+    canvas.reset();
+  }
+}
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {}
