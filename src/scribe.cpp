@@ -53,14 +53,21 @@ void Scribe::update() {
   // Centroid and pitchSalience
   int channel = 0;
   smoothAmount = 0.0; // [0, 1]
-  centroid = audioAnalyzer.getValue(CENTROID, channel, smoothAmount, false);
-  centroidNorm = audioAnalyzer.getValue(CENTROID, channel, smoothAmount, true);
-  pitchSalience = audioAnalyzer.getValue(PITCH_SALIENCE, 0, smoothAmount);
+  bool doNormalize = true;
+  centroid = audioAnalyzer.getValue(CENTROID, channel, smoothAmount);
+  centroidNorm = audioAnalyzer.getValue(CENTROID, channel, smoothAmount, doNormalize);
+  pitchSalience = audioAnalyzer.getValue(PITCH_SALIENCE, channel, smoothAmount);
+  spectrum = audioAnalyzer.getValues(SPECTRUM, channel, smoothAmount);
+  melBands = audioAnalyzer.getValues(MEL_BANDS, channel, smoothAmount);
 
   // Pass onset info to canvas
   if (onset) {
-    canvas->recordOnset(rms, pitchSalience);
+    canvas->recordOnset(rms, centroidNorm);
   }
+
+  // Record spectrum and melBands data
+  canvas->recordSpectrum(spectrum);
+  canvas->recordMelBands(melBands);
 }
 
 //--------------------------------------------------------------
@@ -68,9 +75,9 @@ void Scribe::update() {
 void Scribe::draw() {
   // Text
   ofSetColor(10);
-  string infoString = "RMS Left: " + ofToString(rmsL) + "\nRMS Right: " +
-                      ofToString(rmsR) + "\nRMS: " + ofToString(rms) +
-                      "\nCentroid: " + ofToString(centroid) +
+  string infoString = /*"RMS Left: " + ofToString(rmsL) + "\nRMS Right: " +
+                      ofToString(rmsR) +*/ "\nRMS: " +
+                      ofToString(rms) + "\nCentroid: " + ofToString(centroid) +
                       "\nCentroid Norm: " + ofToString(centroidNorm) +
                       "\nPitchSalience: " + ofToString(pitchSalience);
   ofDrawBitmapString(infoString, 60, 590);
@@ -93,3 +100,4 @@ void Scribe::exit() {
   ofSoundStreamStop();
   audioAnalyzer.exit();
 }
+

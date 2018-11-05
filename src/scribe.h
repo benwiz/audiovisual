@@ -31,6 +31,8 @@ private:
   float centroid;
   float centroidNorm;
   float pitchSalience;
+  vector<float> spectrum;
+  vector<float> melBands;
 };
 
 
