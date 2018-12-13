@@ -29,7 +29,7 @@ void Canvas::draw() {
   ofFill();
   ofSetColor(ofColor::lightGoldenRodYellow);
   ofSetRectMode(OF_RECTMODE_CENTER);
-  ofDrawRectangle(0, 0, w / 2, h / 2);
+  ofDrawRectangle(0, 0, w, h);
 
   // Draw the net with the most recent packet
   if (!packets.empty()) {
