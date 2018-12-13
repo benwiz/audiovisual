@@ -23,11 +23,13 @@ void Canvas::recordPacket(Packet packet) {
 void Canvas::draw() {
   ofPushMatrix();
 
+  ofTranslate(w / 2, h / 2);
+
   // Draw blank canvas rect centered in window
   ofFill();
   ofSetColor(ofColor::lightGoldenRodYellow);
   ofSetRectMode(OF_RECTMODE_CENTER);
-  ofDrawRectangle(ofGetWidth() / 2, ofGetHeight() / 2, w, h);
+  ofDrawRectangle(0, 0, w / 2, h / 2);
 
   // Draw the net with the most recent packet
   if (!packets.empty()) {
