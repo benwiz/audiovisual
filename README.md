@@ -4,5 +4,4 @@ Listener gets audio packets. Then passes them to canvas. Canvas during the draw 
 
 ## To Do
 
-- Draw a grid in 3D
-- Make the grid move in some way
+- Draw the mesh on screen as a grid

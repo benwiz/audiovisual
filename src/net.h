@@ -18,4 +18,5 @@ public:
 
 private:
   vector<ofPoint> points;
+  ofMesh mesh;
 };

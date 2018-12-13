@@ -15,6 +15,7 @@ void Net::setup(int w, int h) {
     for (int j = 0; j < h; j++) {
       ofPoint point(i * multiplier, j * multiplier, 0);
       points.push_back(point);
+      mesh.addVertex(point);
     }
   }
 }
@@ -26,4 +27,6 @@ void Net::draw(Packet packet) {
   for (ofPoint point : points) {
     ofDrawSphere(point.x, point.y, point.z, packet.rms);
   }
+
+  //  mesh.draw();
 }
