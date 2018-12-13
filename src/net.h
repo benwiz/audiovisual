@@ -13,5 +13,9 @@ class Net {
 public:
   Net();
 
+  void setup(int w, int h);
   void draw(Packet packet);
+
+private:
+  vector<ofPoint> points;
 };

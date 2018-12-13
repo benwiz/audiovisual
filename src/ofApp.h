@@ -26,6 +26,7 @@ public:
   void gotMessage(ofMessage msg);
 
 private:
+  ofEasyCam cam;
   Canvas canvas;
   Listener listener;
 };

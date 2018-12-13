@@ -13,7 +13,16 @@ void ofApp::setup() {
 void ofApp::update() { listener.update(); }
 
 //--------------------------------------------------------------
-void ofApp::draw() { canvas.draw(); }
+void ofApp::draw() {
+  // Turn on camera
+  glEnable(GL_DEPTH_TEST);
+  cam.begin();
+
+  canvas.draw();
+
+  // Turn off camera
+  cam.end();
+}
 
 //--------------------------------------------------------------
 void ofApp::exit() { listener.exit(); }

@@ -12,7 +12,7 @@ Canvas::Canvas() {}
 void Canvas::setup(float w, float h) {
   this->w = w;
   this->h = h;
-  net = Net();
+  net.setup(10, 30);
 }
 
 void Canvas::recordPacket(Packet packet) {
@@ -21,16 +21,6 @@ void Canvas::recordPacket(Packet packet) {
 }
 
 void Canvas::draw() {
-  ofPushMatrix();
-
-  ofTranslate(w / 2, h / 2);
-
-  // Draw blank canvas rect centered in window
-  ofFill();
-  ofSetColor(ofColor::lightGoldenRodYellow);
-  ofSetRectMode(OF_RECTMODE_CENTER);
-  ofDrawRectangle(0, 0, w, h);
-
   // Draw the net with the most recent packet
   if (!packets.empty()) {
     Packet lastPacket = packets.back();
@@ -41,8 +31,6 @@ void Canvas::draw() {
     packets.clear();
     packets.push_back(lastPacket);
   }
-
-  ofPopMatrix();
 }
 
 void Canvas::reset() { packets.clear(); }
