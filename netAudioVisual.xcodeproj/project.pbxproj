@@ -10,6 +10,7 @@
 		0C8990CC21C24D8300935DB7 /* packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C8990CA21C24D8300935DB7 /* packet.cpp */; };
 		0C8990CF21C2508A00935DB7 /* listener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C8990CD21C2508A00935DB7 /* listener.cpp */; };
 		0C8990D221C251ED00935DB7 /* canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C8990D021C251ED00935DB7 /* canvas.cpp */; };
+		0C8990D621C25E6100935DB7 /* net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C8990D421C25E6100935DB7 /* net.cpp */; };
 		1D397CC89DDD782F892B7483 /* ofxAudioAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97E50D4D46A31EDC1439DCD0 /* ofxAudioAnalyzer.cpp */; };
 		2302BCF25C1D2BBFE43ADCE6 /* ofxAudioAnalyzerUnit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 269A6B21604528DFF6870885 /* ofxAudioAnalyzerUnit.cpp */; };
 		2761F96388F64FE596863183 /* audiodecodercoreaudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EE3C26422275C7D402CCF25 /* audiodecodercoreaudio.cpp */; };
@@ -70,6 +71,8 @@
 		0C8990D021C251ED00935DB7 /* canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas.cpp; sourceTree = "<group>"; };
 		0C8990D121C251ED00935DB7 /* canvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = canvas.h; sourceTree = "<group>"; };
 		0C8990D321C2533600935DB7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0C8990D421C25E6100935DB7 /* net.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = net.cpp; sourceTree = "<group>"; };
+		0C8990D521C25E6100935DB7 /* net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
 		0D082D21536771F74FC6B427 /* ffmpegapi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ffmpegapi.h; path = ../../../addons/ofxAudioAnalyzer/libs/essentia/include/essentia/utils/ffmpegapi.h; sourceTree = SOURCE_ROOT; };
 		0DD85E8A054A8F37CFD07DE3 /* parameter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = parameter.h; path = ../../../addons/ofxAudioAnalyzer/libs/essentia/include/essentia/parameter.h; sourceTree = SOURCE_ROOT; };
 		0EAB9089FE35D1143C7F21F9 /* ofxAAOnsetsAlgorithm.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxAAOnsetsAlgorithm.h; path = ../../../addons/ofxAudioAnalyzer/src/ofxAAOnsetsAlgorithm.h; sourceTree = SOURCE_ROOT; };
@@ -532,6 +535,8 @@
 				0C8990CE21C2508A00935DB7 /* listener.h */,
 				0C8990D021C251ED00935DB7 /* canvas.cpp */,
 				0C8990D121C251ED00935DB7 /* canvas.h */,
+				0C8990D421C25E6100935DB7 /* net.cpp */,
+				0C8990D521C25E6100935DB7 /* net.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -667,6 +672,7 @@
 				2302BCF25C1D2BBFE43ADCE6 /* ofxAudioAnalyzerUnit.cpp in Sources */,
 				87EB71A35D524340AE0A8C4C /* ofxAudioDecoder.cpp in Sources */,
 				477F449F6256389CCDB36FFC /* audiodecoderbase.cpp in Sources */,
+				0C8990D621C25E6100935DB7 /* net.cpp in Sources */,
 				2761F96388F64FE596863183 /* audiodecodercoreaudio.cpp in Sources */,
 				0C8990D221C251ED00935DB7 /* canvas.cpp in Sources */,
 			);

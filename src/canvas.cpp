@@ -12,18 +12,12 @@ Canvas::Canvas() {}
 void Canvas::setup(float w, float h) {
   this->w = w;
   this->h = h;
+  net = Net();
 }
 
 void Canvas::recordPacket(Packet packet) {
   // Append packet to vector
   packets.push_back(packet);
-}
-
-void Canvas::drawNet(Packet packet) {
-  printf("timestamp:\t%f\n", packet.ms);
-  // printf("\t\trms:\t%f\n", packet.rms);
-  printf("\t\tpitch:\t%f\n", packet.pitchSalience);
-  // printf("\t\tcentrd:\t%f\n", packet.centroidNorm);
 }
 
 void Canvas::draw() {
@@ -38,7 +32,7 @@ void Canvas::draw() {
   // Draw the net with the most recent packet
   if (!packets.empty()) {
     Packet lastPacket = packets.back();
-    drawNet(lastPacket);
+    net.draw(lastPacket);
 
     // For now, we only care about the final packet. So we keep just the final
     // packet. This probably isn't the best way to do this. But whatever.

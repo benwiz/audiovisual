@@ -9,6 +9,7 @@
 
 #include "ofMain.h"
 #include "packet.h"
+#include "net.h"
 
 class Canvas {
 public:
@@ -26,5 +27,6 @@ private:
   float h;
 
   vector<Packet> packets;
+  Net net;
 };
 
