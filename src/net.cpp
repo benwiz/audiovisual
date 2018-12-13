@@ -10,9 +10,10 @@
 Net::Net() {}
 
 void Net::setup(int w, int h) {
+  int multiplier = 10;
   for (int i = 0; i < w; i++) {
     for (int j = 0; j < h; j++) {
-      ofPoint point(i, j, 0);
+      ofPoint point(i * multiplier, j * multiplier, 0);
       points.push_back(point);
     }
   }
@@ -22,11 +23,7 @@ void Net::setup(int w, int h) {
 void Net::draw(Packet packet) {
   ofSetColor(ofColor::black);
 
-  // RMS sphere
-  printf("%f\n", 100 * packet.rms);
-  ofDrawSphere(0, 0, 100 * packet.rms);
-
-  //  // Pitch Salience circle
-  //  printf("%f\n", 100 * packet.pitchSalience);
-  //  ofDrawSphere(0, 0, 100 * packet.pitchSalience);
+  for (ofPoint point : points) {
+    ofDrawSphere(point.x, point.y, point.z, packet.rms);
+  }
 }
