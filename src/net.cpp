@@ -39,7 +39,9 @@ void Net::setup(int w, int h) {
 
 void Net::update(Packet packet) {
   for (auto &vertex : mesh.getVertices()) {
-    vertex += ofPoint(0, 0, 10 * (0.5 - ofRandomuf()));
+    float zOffset = 10 * (0.5 - ofRandomuf());
+    ofPoint offset(0, 0, zOffset);
+    vertex += offset;
   }
 }
 
