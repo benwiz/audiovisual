@@ -11,22 +11,34 @@ Net::Net() {}
 
 void Net::setup(int w, int h) {
   int multiplier = 10;
-  for (int i = 0; i < w; i++) {
-    for (int j = 0; j < h; j++) {
-      ofPoint point(i * multiplier, j * multiplier, 0);
-      points.push_back(point);
+
+  // Set primitive to triangles // OF_PRIMITIVE_TRIANGLES
+  mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+
+  // Add vertices to mesh
+  for (int y = 0; y < h; y++) {
+    for (int x = 0; x < w; x++) {
+      ofPoint point(x * multiplier, y * multiplier, 0);
       mesh.addVertex(point);
+      mesh.addColor(ofColor::black);
+    }
+  }
+
+  for (int y = 0; y < h - 1; y++) {
+    for (int x = 0; x < w - 1; x++) {
+      mesh.addIndex(x + y * w);       // 0
+      mesh.addIndex((x + 1) + y * w); // 1
+      mesh.addIndex(x + (y + 1) * w); // 10
+
+      mesh.addIndex((x + 1) + y * w);       // 1
+      mesh.addIndex((x + 1) + (y + 1) * w); // 11
+      mesh.addIndex(x + (y + 1) * w);       // 10
     }
   }
 }
 
 // TODO: Eventually we want to remove the heavy lifting from the draw function.
 void Net::draw(Packet packet) {
-  ofSetColor(ofColor::black);
-
-  for (ofPoint point : points) {
-    ofDrawSphere(point.x, point.y, point.z, packet.rms);
-  }
-
-  //  mesh.draw();
+  ofTranslate(20, 20);
+  mesh.drawWireframe();
 }

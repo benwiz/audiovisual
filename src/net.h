@@ -17,6 +17,5 @@ public:
   void draw(Packet packet);
 
 private:
-  vector<ofPoint> points;
   ofMesh mesh;
 };

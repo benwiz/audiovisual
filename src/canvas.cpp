@@ -12,7 +12,7 @@ Canvas::Canvas() {}
 void Canvas::setup(float w, float h) {
   this->w = w;
   this->h = h;
-  net.setup(10, 30);
+  net.setup(10, 20);
 }
 
 void Canvas::recordPacket(Packet packet) {
