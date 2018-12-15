@@ -4,5 +4,5 @@ Listener gets audio packets. Then passes them to canvas. Canvas during the draw 
 
 ## To Do
 
-- Calculate distance from center for each vertex during Net::update()
-- 
+- Try various frequency algorithsm (mel bands, frequencies, etc.)
+- Consider including onset detection for emphasis

@@ -56,12 +56,13 @@ void Net::update(Packet packet) {
     float maxDist = sqrt(pow(center.x, 2) + pow(center.y, 2));
     float distRatio = dist / maxDist;
 
-    // Select a melBand
-    int melBandIndex = distRatio * packet.melBands.size();
+    // Select a melBand. We subtract one from the size because the first band
+    // always has too extreme a value.
+    int melBandIndex = distRatio * (packet.melBands.size() - 1);
     cout << melBandIndex << ":\t" << packet.melBands[melBandIndex] << endl;
 
-    // Calculate z value
-    float z = 10 * abs(packet.melBands[melBandIndex]) - 6;
+    // Calculate z-value
+    float z = 10 * (packet.melBands[melBandIndex] + 20);
 
     // Update the vertex
     //  float zOffset = melBandValue;
@@ -75,6 +76,6 @@ void Net::draw() {
   ofTranslate(-45, -45);
   mesh.drawWireframe();
 
-  //  ofSetColor(ofColor::green);
-  //  ofDrawSphere(center.x, center.y, 0, 5);
+  ofSetColor(ofColor::green);
+  ofDrawSphere(0, 0, 20, 5);
 }
