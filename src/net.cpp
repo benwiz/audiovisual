@@ -59,9 +59,9 @@ void Net::update(Packet packet) {
     float maxDist = sqrt(pow(center.x, 2) + pow(center.y, 2));
     float distRatio = dist / maxDist;
 
-    // Select a melBand. We subtract one from the size because the first band
-    // always has too extreme a value.
-    int melBandIndex = distRatio * (packet.melBands.size() - 1);
+    // Select a melBand. We add one because the 0th band always has too extreme
+    // a value.
+    int melBandIndex = distRatio * packet.melBands.size() - 1;
     float normalizedMelBand = ofMap(packet.melBands[melBandIndex], -16 /* DB_MIN */, DB_MAX, 0.0, 1.0, true);
 
     // Primary movement is in the z-plane
@@ -71,8 +71,10 @@ void Net::update(Packet packet) {
     // Secondary movement is in the x- and y-planes. To do this, we move the
     // point toward the xy center based off the `normalizedMelBand` value.
     // Eventually, maybe we want to use some other metric for xy movement.
-    float x = vertex.x;
-    float y = vertex.y;
+    //    float x = vertex.x;
+    //    float y = vertex.y;
+    float x = ofMap(normalizedMelBand, 0, 1.0, initialVertex.x, center.x);
+    float y = ofMap(normalizedMelBand, 0, 1.0, initialVertex.y, center.y);
 
     // Update the vertex
     mesh.getVertices()[i] = ofVec3f(x, y, z);
