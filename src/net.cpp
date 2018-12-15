@@ -42,14 +42,15 @@ void Net::setup(int w, int h) {
 
   // Save the center location of the mesh for later. Just X and Y, not Z.
   center = ofVec2f(w * multiplier / 2, h * multiplier / 2);
+
+  // Save the original vertices
+  initialVertices = mesh.getVertices();
 }
 
 void Net::update(Packet packet) {
-  for (auto &vertex : mesh.getVertices()) {
-
-    // TODO: zOffset should calculate the X-Y (not X-Y-Z) distance from center
-    // of mesh then use that distance as a fraction of radius (max distance
-    // from center) to select a FrequencyBand or a MelBand to warp with.
+  for (int i = 0; i < mesh.getVertices().size(); i++) {
+    ofVec3f vertex = mesh.getVertices()[i];
+    ofVec3f initialVertex = initialVertices[i];
 
     // Calculate X-Y distance and maxDist to find distRatio
     float dist = center.distance(ofVec2f(vertex.x, vertex.y));
@@ -59,23 +60,23 @@ void Net::update(Packet packet) {
     // Select a melBand. We subtract one from the size because the first band
     // always has too extreme a value.
     int melBandIndex = distRatio * (packet.melBands.size() - 1);
-     cout << melBandIndex << ":\t" << packet.melBands[melBandIndex] << endl;
+    float normalizedMelBand = ofMap(packet.melBands[melBandIndex], -16 /* DB_MIN */, DB_MAX, 0.0, 1.0, true);
 
-    // Normalize (clamp value)
-    float scaledValue = ofMap(packet.melBands[melBandIndex], -10 /* DB_MIN */, DB_MAX, 0.0, 1.0, true);
-    cout << scaledValue << endl;
+    // Primary movement is in the z-plane
+    float multiplier = 200;
+    float z = multiplier * normalizedMelBand;
 
-    // Calculate z-value
-    float multiplier = 100;
-    float z = multiplier * scaledValue;
+    // Secondary movement is in the x- and y-planes
+    float x = initialVertex.x;
+    float y = initialVertex.y;
 
     // Update the vertex
-    vertex = ofVec3f(vertex.x, vertex.y, z);
+    vertex = ofVec3f(x, y, z);
   }
 }
 
 void Net::draw() {
-  ofTranslate(-150, -150);
+  ofTranslate(-190, -190);
   mesh.drawWireframe();
 
   //  ofSetColor(ofColor::green);
