@@ -61,7 +61,7 @@ void Net::update(Packet packet) {
 
     // Select a melBand. We add one because the 0th band always has too extreme
     // a value.
-    int melBandIndex = distRatio * packet.melBands.size() - 1;
+    int melBandIndex = distRatio * packet.melBands.size() + 1;
     float normalizedMelBand = ofMap(packet.melBands[melBandIndex], -16 /* DB_MIN */, DB_MAX, 0.0, 1.0, true);
 
     // Primary movement is in the z-plane
