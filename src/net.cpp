@@ -44,7 +44,9 @@ void Net::setup(int w, int h) {
   center = ofVec2f(w * multiplier / 2, h * multiplier / 2);
 
   // Save the original vertices
-  initialVertices = mesh.getVertices();
+  for (auto vertex : mesh.getVertices()) {
+    initialVertices.push_back(vertex);
+  }
 }
 
 void Net::update(Packet packet) {
@@ -66,7 +68,8 @@ void Net::update(Packet packet) {
     float multiplier = 200;
     float z = multiplier * normalizedMelBand;
 
-    // Secondary movement is in the x- and y-planes
+    // Secondary movement is in the x- and y-planes. To do this, we move the
+    // point toward the xy center based off the `normalizedMelBand` value.
     float x = initialVertex.x;
     float y = initialVertex.y;
 
