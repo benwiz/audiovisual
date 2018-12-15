@@ -59,23 +59,25 @@ void Net::update(Packet packet) {
     // Select a melBand. We subtract one from the size because the first band
     // always has too extreme a value.
     int melBandIndex = distRatio * (packet.melBands.size() - 1);
-    cout << melBandIndex << ":\t" << packet.melBands[melBandIndex] << endl;
+     cout << melBandIndex << ":\t" << packet.melBands[melBandIndex] << endl;
+
+    // Normalize (clamp value)
+    float scaledValue = ofMap(packet.melBands[melBandIndex], -10 /* DB_MIN */, DB_MAX, 0.0, 1.0, true);
+    cout << scaledValue << endl;
 
     // Calculate z-value
-    float z = 10 * (packet.melBands[melBandIndex] + 20);
+    float multiplier = 100;
+    float z = multiplier * scaledValue;
 
     // Update the vertex
-    //  float zOffset = melBandValue;
-    //  ofPoint offset(0, 0, zOffset);
-    //  vertex += offset;
     vertex = ofVec3f(vertex.x, vertex.y, z);
   }
 }
 
 void Net::draw() {
-  ofTranslate(-45, -45);
+  ofTranslate(-150, -150);
   mesh.drawWireframe();
 
-  ofSetColor(ofColor::green);
-  ofDrawSphere(0, 0, 20, 5);
+  //  ofSetColor(ofColor::green);
+  //  ofDrawSphere(0, 0, 20, 5);
 }
