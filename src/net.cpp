@@ -38,7 +38,9 @@ void Net::setup(int w, int h) {
 }
 
 void Net::update(Packet packet) {
-  cout << "update net" << endl;
+  for (auto &vertex : mesh.getVertices()) {
+    vertex += ofPoint(0, 0, 10 * (0.5 - ofRandomuf()));
+  }
 }
 
 void Net::draw() {

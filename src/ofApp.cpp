@@ -10,7 +10,10 @@ void ofApp::setup() {
 }
 
 //--------------------------------------------------------------
-void ofApp::update() { listener.update(); }
+void ofApp::update() {
+  listener.update();
+  canvas.update();
+}
 
 //--------------------------------------------------------------
 void ofApp::draw() {

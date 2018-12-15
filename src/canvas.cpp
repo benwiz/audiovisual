@@ -34,6 +34,7 @@ void Canvas::update() {
 }
 
 void Canvas::draw() {
+  // Draw the net
   net.draw();
 }
 
