@@ -19,4 +19,5 @@ public:
 
 private:
   ofMesh mesh;
+  ofVec2f center;
 };
