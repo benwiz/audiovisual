@@ -14,7 +14,8 @@ public:
   Net();
 
   void setup(int w, int h);
-  void draw(Packet packet);
+  void update(Packet packet);
+  void draw();
 
 private:
   ofMesh mesh;

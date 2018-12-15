@@ -17,11 +17,11 @@ public:
 
   void setup(float w, float h);
   void recordPacket(Packet packet);
+  void update();
   void draw();
   void reset();
 
 private:
-  void drawNet(Packet packet);
 
   float w;
   float h;

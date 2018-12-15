@@ -10,7 +10,7 @@
 Net::Net() {}
 
 void Net::setup(int w, int h) {
-  int multiplier = 10;
+  int multiplier = 20;
 
   // Set primitive to triangles // OF_PRIMITIVE_TRIANGLES
   mesh.setMode(OF_PRIMITIVE_TRIANGLES);
@@ -37,8 +37,11 @@ void Net::setup(int w, int h) {
   }
 }
 
-// TODO: Eventually we want to remove the heavy lifting from the draw function.
-void Net::draw(Packet packet) {
-  ofTranslate(20, 20);
+void Net::update(Packet packet) {
+  cout << "update net" << endl;
+}
+
+void Net::draw() {
+  ofTranslate(-45, -45);
   mesh.drawWireframe();
 }

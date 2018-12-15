@@ -20,17 +20,21 @@ void Canvas::recordPacket(Packet packet) {
   packets.push_back(packet);
 }
 
-void Canvas::draw() {
-  // Draw the net with the most recent packet
+void Canvas::update() {
+  // Update the to align with the latest packet
   if (!packets.empty()) {
     Packet lastPacket = packets.back();
-    net.draw(lastPacket);
+    net.update(lastPacket);
 
     // For now, we only care about the final packet. So we keep just the final
     // packet. This probably isn't the best way to do this. But whatever.
     packets.clear();
     packets.push_back(lastPacket);
   }
+}
+
+void Canvas::draw() {
+  net.draw();
 }
 
 void Canvas::reset() { packets.clear(); }
