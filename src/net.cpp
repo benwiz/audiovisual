@@ -39,6 +39,11 @@ void Net::setup(int w, int h) {
 
 void Net::update(Packet packet) {
   for (auto &vertex : mesh.getVertices()) {
+
+    // TODO: zOffset should calculate the distance from center of mesh then use
+    // that distance as a fraction of radius (max distance from center) to
+    // select a FrequencyBand or a MelBand to warp with.
+
     float zOffset = 10 * (0.5 - ofRandomuf());
     ofPoint offset(0, 0, zOffset);
     vertex += offset;

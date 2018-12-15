@@ -4,4 +4,5 @@ Listener gets audio packets. Then passes them to canvas. Canvas during the draw 
 
 ## To Do
 
-- Draw the mesh on screen as a grid
+- Calculate distance from center for each vertex during Net::update()
+- 
