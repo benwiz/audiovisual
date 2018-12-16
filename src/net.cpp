@@ -1,3 +1,4 @@
+
 //
 //  net.cpp
 //  netAudioVisual
@@ -23,7 +24,12 @@ void Net::setup(int w, int h) {
     for (int x = 0; x < w; x++) {
       ofPoint point(x * multiplier, y * multiplier, 0);
       mesh.addVertex(point);
-      mesh.addColor(ofColor::black);
+
+      if (y == 0 && x == 0) {
+        mesh.addColor(ofColor::red);
+      } else {
+        mesh.addColor(ofColor::black);
+      }
     }
   }
 
@@ -41,11 +47,11 @@ void Net::setup(int w, int h) {
   }
 
   // Save the center location of the mesh for later. Just X and Y, not Z.
-  center = ofVec2f(w * multiplier / 2, h * multiplier / 2);
+  center = ofVec2f((w - 1) * multiplier / 2.0, (h - 1) * multiplier / 2.0);
 
   // Save the original vertices
   for (auto vertex : mesh.getVertices()) {
-    initialVertices.push_back(vertex); // ofVec3f(vertex.x, vertex.y, vertex.z)
+    initialVertices.push_back(vertex);
   }
 }
 
@@ -59,22 +65,31 @@ void Net::update(Packet packet) {
     float maxDist = sqrt(pow(center.x, 2) + pow(center.y, 2));
     float distRatio = dist / maxDist;
 
-    // Select a melBand. We add one because the 0th band always has too extreme
-    // a value.
-    int melBandIndex = distRatio * packet.melBands.size() + 1;
-    float normalizedMelBand = ofMap(packet.melBands[melBandIndex], -16 /* DB_MIN */, DB_MAX, 0.0, 1.0, true);
+    // NOTE: I decided to switch to frequency.
+    //    // Select a melBand. We add one because the 0th band always has too
+    //    extreme
+    //    // a value.
+    //    int melBandIndex = distRatio * packet.melBands.size() + 1;
+    //    float normalizedMelBand = ofMap(packet.melBands[melBandIndex], -16 /*
+    //    DB_MIN */, DB_MAX, 0.0, 1.0, true);
+
+    // Select a frequency from spectrum
+    int spectrumIndex = distRatio * (packet.spectrum.size() - 1);
+    float frequency =
+        ofMap(packet.spectrum[spectrumIndex], DB_MIN, DB_MAX, 0.0, 1.0, true);
 
     // Primary movement is in the z-plane
     float multiplier = 200;
-    float z = multiplier * normalizedMelBand;
+    float z = multiplier * frequency;
 
     // Secondary movement is in the x- and y-planes. To do this, we move the
     // point toward the xy center based off the `normalizedMelBand` value.
     // Eventually, maybe we want to use some other metric for xy movement.
-    //    float x = vertex.x;
-    //    float y = vertex.y;
-    float x = ofMap(normalizedMelBand, 0, 1.0, initialVertex.x, center.x);
-    float y = ofMap(normalizedMelBand, 0, 1.0, initialVertex.y, center.y);
+    float x = vertex.x;
+    float y = vertex.y;
+    //    float x = ofMap(normalizedMelBand, 0, 1.0, min(initialVertex.x,
+    //    center.x), center.x);
+    //    float y = ofMap(normalizedMelBand, 0, 1.0, initialVertex.y, center.y);
 
     // Update the vertex
     mesh.getVertices()[i] = ofVec3f(x, y, z);
@@ -86,5 +101,8 @@ void Net::draw() {
   mesh.drawWireframe();
 
   //  ofSetColor(ofColor::green);
-  //  ofDrawSphere(0, 0, 20, 5);
+  //  ofDrawCircle(center.x, center.y, 282.843);
+  //
+  //  ofSetColor(ofColor::blue);
+  //  ofDrawCircle(center.x, center.y, 1, 20);
 }
