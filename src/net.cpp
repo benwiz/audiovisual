@@ -24,12 +24,7 @@ void Net::setup(int w, int h) {
     for (int x = 0; x < w; x++) {
       ofPoint point(x * multiplier, y * multiplier, 0);
       mesh.addVertex(point);
-
-      if (y == 0 && x == 0) {
-        mesh.addColor(ofColor::red);
-      } else {
-        mesh.addColor(ofColor::black);
-      }
+      mesh.addColor(ofColor::black);
     }
   }
 
