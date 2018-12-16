@@ -11,9 +11,6 @@
 Net::Net() {}
 
 void Net::setup(int w, int h) {
-  // TODO: Consider other shape options, it may make more sense to have a
-  // circle or even a sphere (or any shape?)
-
   int multiplier = 20;
 
   // Set primitive to triangles // OF_PRIMITIVE_TRIANGLES
@@ -74,19 +71,23 @@ void Net::update(Packet packet) {
         ofMap(packet.spectrum[spectrumIndex], DB_MIN, DB_MAX, 0.0, 1.0, true);
 
     // Primary movement is in the z-plane
-    float multiplier = 200;
-    float z = multiplier * frequency;
+    float z = 200 * frequency;
 
-    // Secondary movement is in the x- and y-planes. To do this, we move the
-    // point toward the xy center based off the `normalizedMelBand` value.
-    // Eventually, maybe we want to use some other metric for xy movement.
-    float x = vertex.x;
-    float y = vertex.y;
-    //    float x = ofMap(normalizedMelBand, 0, 1.0, min(initialVertex.x,
-    //    center.x), center.x);
-    //    float y = ofMap(normalizedMelBand, 0, 1.0, initialVertex.y, center.y);
+    // Secondary movement is in the x- and y-planes
 
-    // Update the vertex
+    // Create line from initial vertex location to center
+    ofPolyline line;
+    line.addVertex(initialVertex.x, initialVertex.y);
+    line.addVertex(center.x, center.y);
+    float percent = ofMap(packet.power, 0.0, 5.0, 0.0, 1.0);
+    percent *= 1 + distRatio;
+    percent = 0.5;
+    ofPoint point = line.getPointAtPercent(percent);
+    float x = point.x;
+    float y = point.y;
+
+    // Update the vertex's position
+    z = 0; // tmp
     mesh.getVertices()[i] = ofVec3f(x, y, z);
   }
 }
@@ -97,7 +98,10 @@ void Net::draw() {
 
   //  ofSetColor(ofColor::green);
   //  ofDrawCircle(center.x, center.y, 282.843);
-  //
+
   //  ofSetColor(ofColor::blue);
   //  ofDrawCircle(center.x, center.y, 1, 20);
+
+  ofSetColor(ofColor::lightGreen);
+  ofDrawRectangle(0, 0, -1, 380, 380);
 }

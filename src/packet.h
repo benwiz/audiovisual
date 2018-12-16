@@ -19,6 +19,7 @@ public:
   float rmsL;
   float rmsR;
   float rms;
+  float power;
   bool isOnset;
   float centroidNorm;
   float pitchSalience;
