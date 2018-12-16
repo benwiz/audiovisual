@@ -18,6 +18,7 @@ Packet::Packet(ofxAudioAnalyzer *audioAnalyzer) {
   rms = (rmsL + rmsR) / 2;
 
   // Get power
+  smoothAmount = 0.4;
   power = audioAnalyzer->getValue(POWER, 0, smoothAmount);
 
   // Onset

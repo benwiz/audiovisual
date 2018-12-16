@@ -1,4 +1,10 @@
 
+
+
+
+
+
+
 //
 //  net.cpp
 //  netAudioVisual
@@ -79,15 +85,15 @@ void Net::update(Packet packet) {
     ofPolyline line;
     line.addVertex(initialVertex.x, initialVertex.y);
     line.addVertex(center.x, center.y);
-    float percent = ofMap(packet.power, 0.0, 5.0, 0.0, 1.0);
-    percent *= 1 + distRatio;
-    percent = 0.5;
+    float percent = ofMap(packet.power, 0, 20, 0, 1);
+    percent *= 1 - distRatio;
+    percent *= 100;
+    cout << percent << endl;
     ofPoint point = line.getPointAtPercent(percent);
     float x = point.x;
     float y = point.y;
 
     // Update the vertex's position
-    z = 0; // tmp
     mesh.getVertices()[i] = ofVec3f(x, y, z);
   }
 }
