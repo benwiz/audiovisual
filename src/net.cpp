@@ -82,12 +82,15 @@ void Net::update(Packet packet) {
     // Secondary movement is in the x- and y-planes
 
     // Create line from initial vertex location to center
+    // TODO: Figure out how to bubble out the mesh
     ofPolyline line;
-    line.addVertex(initialVertex.x, initialVertex.y);
+    //line.addVertex(initialVertex.x, initialVertex.y);
+    line.addVertex(2*initialVertex.x-center.x, 2*initialVertex.y-center.y); // This extends the line twice as far away from center as target point
     line.addVertex(center.x, center.y);
-    float percent = ofMap(packet.power, 0, 20, 0, 1);
+    float percent = ofMap(packet.power, 0, 10, 0, 1);
     percent *= 1 - distRatio;
     percent *= 100;
+    percent = 1 - percent;
     cout << percent << endl;
     ofPoint point = line.getPointAtPercent(percent);
     float x = point.x;
@@ -110,4 +113,9 @@ void Net::draw() {
 
   ofSetColor(ofColor::lightGreen);
   ofDrawRectangle(0, 0, -1, 380, 380);
+
+  ofSetColor(ofColor::red);
+  ofDrawCircle(initialVertices[100].x, initialVertices[100].y, 1, 5);
+  ofDrawCircle(center.x, center.y, 1, 5);
+  ofDrawCircle(2*initialVertices[100].x - center.x, 2*initialVertices[100].y - center.y, 1, 5);
 }
