@@ -4,7 +4,7 @@ Listener gets audio packets. Then passes them to canvas. Canvas during the draw 
 
 ## To Do
 
-- Don't do immediate updates, vertices should move with some decay or stickiness
+- Don't use wireFrame, use a shader
 
 - Consider including onset detection for emphasis
 - X, Y, and Z movements can all use different metrics
