@@ -36,6 +36,22 @@ void Canvas::update() {
 void Canvas::draw() {
   // Draw the net
   net.draw();
+
+  //  // Draw the fft spectrum for debugging
+  //  float x = -1000;
+  //  float y = -500;
+  //  float step = 10;
+  //  ofPath path;
+  //  path.moveTo(x, y);
+  //  for (int i = 0; i < packets.back().spectrum.size(); i++) {
+  //    y = ofGetHeight() - abs(packets.back().spectrum[i]) * 200;
+  //    path.lineTo(x, y);
+  //    x += step;
+  //  }
+  //  path.setFilled(false);
+  //  path.setStrokeColor(ofColor::black);
+  //  path.setStrokeWidth(2);
+  //  path.draw();
 }
 
 void Canvas::reset() { packets.clear(); }

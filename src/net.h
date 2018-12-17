@@ -21,4 +21,5 @@ private:
   ofMesh mesh;
   ofVec2f center;
   vector<ofVec3f> initialVertices;
+  float maxFrequencies[257];
 };

@@ -49,6 +49,7 @@ void Net::setup(int w, int h) {
 }
 
 void Net::update(Packet packet) {
+  // Update vertices
   for (int i = 0; i < mesh.getVertices().size(); i++) {
     ofVec3f vertex = mesh.getVertices()[i];
     ofVec3f initialVertex = initialVertices[i];
@@ -71,29 +72,43 @@ void Net::update(Packet packet) {
     float frequency =
         ofMap(packet.spectrum[spectrumIndex], DB_MIN, DB_MAX, 0.0, 1.0, true);
 
+    // Update the maxFrequencies array
+    float currMaxFrequency = maxFrequencies[spectrumIndex];
+    if (frequency > currMaxFrequency) {
+      maxFrequencies[spectrumIndex] = frequency;
+    }
+
     // Primary movement is in the z-plane
     float z = 200 * frequency;
 
-    // Secondary movement is in the x- and y-planes
-
-    // Create line from initial vertex location to center
+    // Secondary movement is in the x- and y-planes. Move each vertex closer to
+    // the center. Distance is dictated by the packet's `power`.
     ofPolyline line;
     line.addVertex(initialVertex.x, initialVertex.y);
-    //    line.addVertex(2 * initialVertex.x - center.x,  // This extends the
-    //    line
-    //                   2 * initialVertex.y - center.y); // away from target
     line.addVertex(center.x, center.y);
-    float percent = ofMap(packet.power, 0, 10, 0, 1);
+    float percent = ofMap(packet.power, 0, 1, 0, 1);
     percent *= 1 - distRatio;
     percent *= 100;
     percent = 1 - percent;
-    // cout << percent << endl;
     ofPoint point = line.getPointAtPercent(percent);
     float x = point.x;
     float y = point.y;
 
     // Update the vertex's position
     mesh.getVertices()[i] = ofVec3f(x, y, z);
+
+    // Make the color of the vertex red if if the frequency is large enough
+    //cout << frequency << " | " << maxFrequencies[spectrumIndex] << endl;
+    if (frequency > 0.9 * maxFrequencies[spectrumIndex]) {
+      mesh.getColors()[i] = ofColor::red;
+    } else {
+      mesh.getColors()[i] = ofColor::black;
+    }
+  }
+
+  // Decay max frequencies
+  for (int i = 0; i < packet.spectrum.size(); i++) {
+    maxFrequencies[i] *= 0.99;
   }
 }
 
