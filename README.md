@@ -21,7 +21,6 @@ To deploy just push all changes to GitHub.
 - Create a prototype for The Revialists using Gimp
 
 - The line shape is missing two points
-- Figure out how to make background transparent, default is black when exported as PNG
 - Download as svg... maybe look into how canvas-sketch exports large PNGs
 
 - Configs

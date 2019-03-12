@@ -147,7 +147,7 @@ const draw = (p5: any): void => {
   // Stop the loop
   p5.noLoop();
   // Save
-  // p5.save(CANVAS, 'out.jpg');
+  // p5.save(CANVAS, 'out.png');
 };
 
 ////////////
