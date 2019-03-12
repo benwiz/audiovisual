@@ -45,11 +45,11 @@ const preload = async (p5: any): Promise<void> => {
 };
 
 const setup = (p5: any): void => {
-  p5.createCanvas(p5.windowWidth, p5.windowHeight);
+  p5.createCanvas(0.8 * p5.windowWidth, 0.8 * p5.windowHeight);
 };
 
 const draw = (p5: any): void => {
-  // console.log('draw');
+  p5.background(200);
 };
 
 export default { preload, setup, draw };

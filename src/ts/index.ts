@@ -11,7 +11,7 @@ const sketch = function(p5: P5) {
   };
 
   p5.draw = () => {
-    Sketch.setup(p5);
+    Sketch.draw(p5);
   };
 };
 
