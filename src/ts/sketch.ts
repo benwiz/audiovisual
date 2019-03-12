@@ -22,12 +22,22 @@ interface AudioFeatures {
 
 let ALBUM_AUDIO_FEATURES: AudioFeatures[];
 
-// Helper //
+//////////
+// Util //
+//////////
 
 const range = (start: number, stop: number, step: number = 1) =>
   Array(Math.ceil((stop - start) / step))
     .fill(start)
     .map((x, y) => x + y * step);
+
+export const scale = (
+  num: number,
+  inMin: number,
+  inMax: number,
+  outMin: number,
+  outMax: number,
+): number => ((num - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 
 /////////////
 // Preload //
@@ -96,7 +106,12 @@ const draw = (p5: any): void => {
   // Get x- and y-values
   const n = ALBUM_AUDIO_FEATURES.length;
   const xValues = getXValues(p5, n);
-  const yValues = getYValues(ALBUM_AUDIO_FEATURES);
+  let yValues = getYValues(ALBUM_AUDIO_FEATURES);
+
+  // Scale yValues
+  yValues = yValues.map(y =>
+    scale(y, Math.min(...yValues), Math.max(...yValues), 0, 1),
+  );
 
   // Drawing configs
   p5.strokeWeight(5);
@@ -112,8 +127,8 @@ const draw = (p5: any): void => {
   p5.curveVertex(xValues[0], yValues[0]);
   for (let i: number = 0; i < n; i++) {
     const x = xValues[i];
+    console.log(1 - yValues[i]);
     const y = (1 - yValues[i]) * p5.height;
-    console.log(y);
     p5.curveVertex(x, y);
   }
   p5.curveVertex(xValues[n - 1], yValues[n - 1]);
