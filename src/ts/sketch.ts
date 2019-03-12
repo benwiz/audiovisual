@@ -22,6 +22,13 @@ interface AudioFeatures {
 
 let ALBUM_AUDIO_FEATURES: AudioFeatures[];
 
+// Helper //
+
+const range = (start: number, stop: number, step: number = 1) =>
+  Array(Math.ceil((stop - start) / step))
+    .fill(start)
+    .map((x, y) => x + y * step);
+
 /////////////
 // Preload //
 /////////////
@@ -63,8 +70,7 @@ const setup = (p5: any): void => {
 // Draw //
 //////////
 
-// Extract single feature from audioFeatures
-const getData = (albumAudioFeatures: AudioFeatures[]) => {
+const getYValues = (albumAudioFeatures: AudioFeatures[]) => {
   const result: number[] = [];
   for (const trackAudioFeature of albumAudioFeatures) {
     const feature: number = trackAudioFeature.energy; // TODO: Generalize
@@ -73,13 +79,18 @@ const getData = (albumAudioFeatures: AudioFeatures[]) => {
   return result;
 };
 
+const getPoints = (yValues: number[]) => {
+  // console.log(yValues);
+};
+
 const draw = (p5: any): void => {
   if (!ALBUM_AUDIO_FEATURES) return;
 
   p5.background(200);
 
-  // Extract data from from AUDIO_FEATURES using given property
-  const data = getData(ALBUM_AUDIO_FEATURES);
+  // Get x- and y-values
+  const xValues = range(0, ALBUM_AUDIO_FEATURES.length);
+  const yValues = getYValues(ALBUM_AUDIO_FEATURES);
 };
 
 ////////////
