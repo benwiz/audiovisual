@@ -1,4 +1,5 @@
 interface AudioFeatures {
+  // TODO: Put ranges or options in here in comments
   danceability: number;
   energy: number;
   key: number;
@@ -19,8 +20,24 @@ interface AudioFeatures {
   timeSignature: number;
 }
 
-const main = (): void => {
-  console.log('hey!');
+async function api<T>(url: string): Promise<T> {
+  return fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json().then(data => data as T);
+    })
+    .catch((error: Error) => {
+      throw error;
+    });
+}
+
+const main = async (): Promise<void> => {
+  // Get audio features for one data file
+  const audioFeatures = await api('/data/vital-signs.json');
+
+  //
 };
 
 main();
