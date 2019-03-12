@@ -20,7 +20,7 @@ interface AudioFeatures {
   timeSignature: number;
 }
 
-const ALBUM_AUDIO_FEATURES: AudioFeatures[] = [];
+let ALBUM_AUDIO_FEATURES: AudioFeatures[];
 
 /////////////
 // Preload //
@@ -40,12 +40,15 @@ async function api<T>(url: string): Promise<T> {
 }
 
 const preload = async (p5: any): Promise<void> => {
-  // Get audio features for one album and add to the global variable
-  const audioFeaturesResponse: { audio_features: AudioFeatures } = await api(
+  // Get audio features for one album
+  const audioFeaturesResponse: { audio_features: AudioFeatures[] } = await api(
     '/data/vital-signs.json',
   );
-  const audioFeatures: AudioFeatures = audioFeaturesResponse.audio_features;
-  ALBUM_AUDIO_FEATURES.push(audioFeatures);
+  const albumAudioFeatures: AudioFeatures[] =
+    audioFeaturesResponse.audio_features;
+
+  // Save in global variable
+  ALBUM_AUDIO_FEATURES = albumAudioFeatures;
 };
 
 ///////////
@@ -60,11 +63,23 @@ const setup = (p5: any): void => {
 // Draw //
 //////////
 
+// Extract single feature from audioFeatures
+const getData = (albumAudioFeatures: AudioFeatures[]) => {
+  const result: number[] = [];
+  for (const trackAudioFeature of albumAudioFeatures) {
+    const feature: number = trackAudioFeature.energy; // TODO: Generalize
+    result.push(feature);
+  }
+  return result;
+};
+
 const draw = (p5: any): void => {
   p5.background(200);
 
-  // For each set of songs (album) draw a line using the provided property
-  // as the y-value.
+  // Extract data from from AUDIO_FEATURES using given property
+  console.log('ALBUM_AUDIO_FEATURES', ALBUM_AUDIO_FEATURES);
+  const data = getData(ALBUM_AUDIO_FEATURES);
+  console.log(data);
 };
 
 ////////////

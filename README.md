@@ -18,5 +18,10 @@ To deploy just push all changes to GitHub.
 
 ## To Do
 
+- Figure out how to make preload wait... or move data downloading into SETUP
+
 - Function to consume the example data for one album
 - Function to draw curve using consumed data and given property name (maybe a function of property names in the future)
+- Configs
+  - property (feature name)
+  - line/stroke width
