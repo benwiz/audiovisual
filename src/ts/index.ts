@@ -35,9 +35,11 @@ async function api<T>(url: string): Promise<T> {
 
 const main = async (): Promise<void> => {
   // Get audio features for one data file
-  const audioFeatures = await api('/data/vital-signs.json');
-
-  //
+  const audioFeaturesResponse: { audio_features: AudioFeatures } = await api(
+    '/data/vital-signs.json',
+  );
+  const audioFeatures: AudioFeatures = audioFeaturesResponse.audio_features;
+  console.log(audioFeatures);
 };
 
 main();
