@@ -60,7 +60,7 @@ async function api<T>(url: string): Promise<T> {
 const preload = async (p5: any): Promise<void> => {
   // Get audio features for one album
   const audioFeaturesResponse: { audio_features: AudioFeatures[] } = await api(
-    '/data/vital-signs.json',
+    '/data/city-of-sound.json',
   );
   const albumAudioFeatures: AudioFeatures[] =
     audioFeaturesResponse.audio_features;
@@ -76,7 +76,10 @@ const preload = async (p5: any): Promise<void> => {
 const setup = (p5: any): void => {
   const widthRatio = 0.8;
   const heightRatio = 0.25 * widthRatio;
-  CANVAS = p5.createCanvas(0.8 * p5.windowWidth, 0.2 * p5.windowHeight);
+  // const w = widthRatio * p5.windowWidth;
+  const w = 1000;
+  const h = heightRatio * w;
+  CANVAS = p5.createCanvas(w, h);
 };
 
 //////////
@@ -116,13 +119,13 @@ const draw = (p5: any): void => {
 
   // Drawing configs
   p5.stroke(159, 137, 88); // Saints gold
-  p5.strokeWeight(5);
+  p5.strokeWeight(50);
   p5.noFill();
 
   // Set matrix to scale and translate so endpoints are visible
   p5.push();
   p5.scale(0.9);
-  p5.translate(0.05 * p5.width, 0.07 * p5.height);
+  p5.translate(0.05 * p5.width, 0.03 * p5.height);
 
   // Draw line
   p5.beginShape();
@@ -131,6 +134,9 @@ const draw = (p5: any): void => {
     const x = xValues[i];
     const y = (1 - yValues[i]) * p5.height;
     p5.curveVertex(x, y);
+
+    // Also draw point for debugging
+    p5.ellipse(x, y, 10);
   }
   p5.curveVertex(xValues[n - 1], yValues[n - 1]);
   p5.endShape();
@@ -141,7 +147,7 @@ const draw = (p5: any): void => {
   // Stop the loop
   p5.noLoop();
   // Save
-  p5.save(CANVAS, 'out.jpg');
+  // p5.save(CANVAS, 'out.jpg');
 };
 
 ////////////
