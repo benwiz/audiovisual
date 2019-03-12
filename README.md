@@ -18,10 +18,10 @@ To deploy just push all changes to GitHub.
 
 ## To Do
 
-- Figure out how to make preload wait... or move data downloading into SETUP
+- Create a prototype for The Revialists using Gimp
 
-- Function to consume the example data for one album
-- Function to draw curve using consumed data and given property name (maybe a function of property names in the future)
+- Download as svg... maybe look into how canvas-sketch exports large PNGs
+
 - Configs
   - property (feature name)
   - line/stroke width

@@ -20,6 +20,7 @@ interface AudioFeatures {
   timeSignature: number;
 }
 
+let CANVAS: any;
 let ALBUM_AUDIO_FEATURES: AudioFeatures[];
 
 //////////
@@ -75,7 +76,7 @@ const preload = async (p5: any): Promise<void> => {
 const setup = (p5: any): void => {
   const widthRatio = 0.8;
   const heightRatio = 0.25 * widthRatio;
-  p5.createCanvas(0.8 * p5.windowWidth, 0.2 * p5.windowHeight);
+  CANVAS = p5.createCanvas(0.8 * p5.windowWidth, 0.2 * p5.windowHeight);
 };
 
 //////////
@@ -114,6 +115,7 @@ const draw = (p5: any): void => {
   );
 
   // Drawing configs
+  p5.stroke(159, 137, 88); // Saints gold
   p5.strokeWeight(5);
   p5.noFill();
 
@@ -136,8 +138,10 @@ const draw = (p5: any): void => {
   // Unset matrix
   p5.pop();
 
-  // Stop the loop. (only doing this cuz easier for debugging)
+  // Stop the loop
   p5.noLoop();
+  // Save
+  p5.save(CANVAS, 'out.jpg');
 };
 
 ////////////
