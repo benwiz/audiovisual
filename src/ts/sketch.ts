@@ -74,12 +74,12 @@ const getData = (albumAudioFeatures: AudioFeatures[]) => {
 };
 
 const draw = (p5: any): void => {
+  if (!ALBUM_AUDIO_FEATURES) return;
+
   p5.background(200);
 
   // Extract data from from AUDIO_FEATURES using given property
-  console.log('ALBUM_AUDIO_FEATURES', ALBUM_AUDIO_FEATURES);
   const data = getData(ALBUM_AUDIO_FEATURES);
-  console.log(data);
 };
 
 ////////////
