@@ -120,14 +120,13 @@ const draw = (p5: any): void => {
   // Set matrix to scale and translate so endpoints are visible
   p5.push();
   p5.scale(0.9);
-  p5.translate(0.05 * p5.width, 0);
+  p5.translate(0.05 * p5.width, 0.07 * p5.height); // TODO: Why do I have to translate y-axis?
 
   // Draw line
   p5.beginShape();
   p5.curveVertex(xValues[0], yValues[0]);
   for (let i: number = 0; i < n; i++) {
     const x = xValues[i];
-    console.log(1 - yValues[i]);
     const y = (1 - yValues[i]) * p5.height;
     p5.curveVertex(x, y);
   }
