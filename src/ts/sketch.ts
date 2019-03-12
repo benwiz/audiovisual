@@ -63,6 +63,8 @@ const preload = async (p5: any): Promise<void> => {
 ///////////
 
 const setup = (p5: any): void => {
+  const widthRatio = 0.8;
+  const heightRatio = 0.25 * widthRatio;
   p5.createCanvas(0.8 * p5.windowWidth, 0.2 * p5.windowHeight);
 };
 
