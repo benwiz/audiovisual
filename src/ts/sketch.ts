@@ -70,6 +70,12 @@ const setup = (p5: any): void => {
 // Draw //
 //////////
 
+const getXValues = (p5: any, n: number) => {
+  const values: number[] = range(0, n);
+  const scaledValues = values.map(x => (x / (n - 1)) * p5.width);
+  return scaledValues;
+};
+
 const getYValues = (albumAudioFeatures: AudioFeatures[]) => {
   const result: number[] = [];
   for (const trackAudioFeature of albumAudioFeatures) {
@@ -79,18 +85,44 @@ const getYValues = (albumAudioFeatures: AudioFeatures[]) => {
   return result;
 };
 
-const getPoints = (yValues: number[]) => {
-  // console.log(yValues);
-};
-
 const draw = (p5: any): void => {
+  // Don't draw if no data
   if (!ALBUM_AUDIO_FEATURES) return;
 
+  // Set background color
   p5.background(200);
 
   // Get x- and y-values
-  const xValues = range(0, ALBUM_AUDIO_FEATURES.length);
+  const n = ALBUM_AUDIO_FEATURES.length;
+  const xValues = getXValues(p5, n);
   const yValues = getYValues(ALBUM_AUDIO_FEATURES);
+
+  // Drawing configs
+  p5.strokeWeight(5);
+  p5.noFill();
+
+  // Set matrix and scale
+  p5.push();
+  p5.scale(0.9);
+  p5.translate(0.05 * p5.width, 0);
+
+  // Draw line
+  p5.beginShape();
+  p5.curveVertex(xValues[0], yValues[0]);
+  for (let i: number = 0; i < n; i++) {
+    const x = xValues[i];
+    const y = (1 - yValues[i]) * p5.height;
+    console.log(y);
+    p5.curveVertex(x, y);
+  }
+  p5.curveVertex(xValues[n - 1], yValues[n - 1]);
+  p5.endShape();
+
+  // Unset matrix
+  p5.pop();
+
+  // Stop the loop. (only doing this cuz easier for debugging)
+  p5.noLoop();
 };
 
 ////////////
