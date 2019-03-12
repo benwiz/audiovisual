@@ -22,6 +22,10 @@ interface AudioFeatures {
 
 const ALBUM_AUDIO_FEATURES: AudioFeatures[] = [];
 
+/////////////
+// Preload //
+/////////////
+
 async function api<T>(url: string): Promise<T> {
   return fetch(url)
     .then(response => {
@@ -44,12 +48,27 @@ const preload = async (p5: any): Promise<void> => {
   ALBUM_AUDIO_FEATURES.push(audioFeatures);
 };
 
+///////////
+// Setup //
+///////////
+
 const setup = (p5: any): void => {
   p5.createCanvas(0.8 * p5.windowWidth, 0.8 * p5.windowHeight);
 };
 
+//////////
+// Draw //
+//////////
+
 const draw = (p5: any): void => {
   p5.background(200);
+
+  // For each set of songs (album) draw a line using the provided property
+  // as the y-value.
 };
+
+////////////
+// Export //
+////////////
 
 export default { preload, setup, draw };
