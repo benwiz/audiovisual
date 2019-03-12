@@ -120,7 +120,7 @@ const draw = (p5: any): void => {
   // Set matrix to scale and translate so endpoints are visible
   p5.push();
   p5.scale(0.9);
-  p5.translate(0.05 * p5.width, 0.05 * p5.height); // TODO: Why do I have to translate y-axis?
+  p5.translate(0.05 * p5.width, 0.07 * p5.height);
 
   // Draw line
   p5.beginShape();
