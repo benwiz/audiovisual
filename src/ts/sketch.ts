@@ -63,7 +63,7 @@ const preload = async (p5: any): Promise<void> => {
 ///////////
 
 const setup = (p5: any): void => {
-  p5.createCanvas(0.8 * p5.windowWidth, 0.8 * p5.windowHeight);
+  p5.createCanvas(0.8 * p5.windowWidth, 0.2 * p5.windowHeight);
 };
 
 //////////
@@ -89,8 +89,7 @@ const draw = (p5: any): void => {
   // Don't draw if no data
   if (!ALBUM_AUDIO_FEATURES) return;
 
-  // Set background color
-  p5.background(200);
+  // Do not set background color to keep it transparent
 
   // Get x- and y-values
   const n = ALBUM_AUDIO_FEATURES.length;
@@ -101,7 +100,7 @@ const draw = (p5: any): void => {
   p5.strokeWeight(5);
   p5.noFill();
 
-  // Set matrix and scale
+  // Set matrix to scale and translate so endpoints are visible
   p5.push();
   p5.scale(0.9);
   p5.translate(0.05 * p5.width, 0);
