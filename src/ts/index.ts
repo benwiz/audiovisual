@@ -1,18 +1,19 @@
 import * as P5 from 'p5/lib/p5.min';
-import Sketch from './sketch';
+import SingleAudioFeatureSketch from './single-audio-feature-sketch';
 
-const sketch = function(p5: P5) {
+const singleAudioFeatureSketch = (p5: P5) => {
   p5.preload = async () => {
-    await Sketch.preload(p5);
+    await SingleAudioFeatureSketch.preload(p5);
   };
 
   p5.setup = () => {
-    Sketch.setup(p5);
+    SingleAudioFeatureSketch.setup(p5);
   };
 
   p5.draw = () => {
-    Sketch.draw(p5);
+    SingleAudioFeatureSketch.draw(p5);
   };
 };
 
-new P5(sketch);
+new P5(singleAudioFeatureSketch);
+// new P5(singleAudioFeatureSketch);

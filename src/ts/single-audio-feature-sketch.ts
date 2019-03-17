@@ -20,6 +20,7 @@ interface AudioFeatures {
   timeSignature: number;
 }
 
+// Globals
 let CANVAS: any;
 let ALBUM_AUDIO_FEATURES: AudioFeatures[];
 
@@ -60,7 +61,7 @@ async function api<T>(url: string): Promise<T> {
 const preload = async (p5: any): Promise<void> => {
   // Get audio features for one album
   const audioFeaturesResponse: { audio_features: AudioFeatures[] } = await api(
-    '/data/city-of-sound.json',
+    '/data/vital-signs.json',
   );
   const albumAudioFeatures: AudioFeatures[] =
     audioFeaturesResponse.audio_features;
@@ -119,7 +120,7 @@ const draw = (p5: any): void => {
 
   // Drawing configs
   p5.stroke(159, 137, 88); // Saints gold
-  p5.strokeWeight(50);
+  p5.strokeWeight(10);
   p5.noFill();
 
   // Set matrix to scale and translate so endpoints are visible

@@ -16,13 +16,15 @@ npm start
 
 To deploy just push all changes to GitHub.
 
+## Plan
+
+- Create the following patterns using Audio Features data only. Have a new canvas and download button for each song in album.
+  - Single feature plot
+    - Configs
+      - stroke width
+      - feature selector
+      - point display
+- 
+
 ## To Do
 
-- Create a prototype for The Revialists using Gimp
-
-- The line shape is missing two points
-- Download as svg... maybe look into how canvas-sketch exports large PNGs
-
-- Configs
-  - property (feature name)
-  - line/stroke width
