@@ -21,7 +21,7 @@ interface AudioFeatures {
 }
 
 // Globals
-let CANVAS: any;
+let GRAPHICS: any;
 let ALBUM_AUDIO_FEATURES: AudioFeatures[];
 
 //////////
@@ -80,7 +80,10 @@ const setup = (p5: any): void => {
   // const w = widthRatio * p5.windowWidth;
   const w = 1000;
   const h = heightRatio * w;
-  CANVAS = p5.createCanvas(w, h);
+  p5.createCanvas(w, h);
+  const graphicsW = 8000;
+  const graphicsH = heightRatio * graphicsW;
+  GRAPHICS = p5.createGraphics(graphicsW, graphicsH);
 };
 
 //////////
@@ -102,15 +105,12 @@ const getYValues = (albumAudioFeatures: AudioFeatures[]) => {
   return result;
 };
 
-const draw = (p5: any): void => {
-  // Don't draw if no data
-  if (!ALBUM_AUDIO_FEATURES) return;
-
+const drawSurface = (surface: any): void => {
   // Do not set background color to keep it transparent
 
   // Get x- and y-values
   const n = ALBUM_AUDIO_FEATURES.length;
-  const xValues = getXValues(p5, n);
+  const xValues = getXValues(surface, n);
   let yValues = getYValues(ALBUM_AUDIO_FEATURES);
 
   // Scale yValues
@@ -119,40 +119,57 @@ const draw = (p5: any): void => {
   );
 
   // Drawing configs
-  p5.stroke(159, 137, 88); // Saints gold
-  p5.strokeWeight(10);
-  p5.noFill();
+  surface.stroke(159, 137, 88); // Saints gold
+  surface.strokeWeight(10);
+  surface.noFill();
 
   // Set matrix to scale and translate so endpoints are visible
-  p5.push();
-  p5.scale(0.9);
-  p5.translate(0.05 * p5.width, 0.03 * p5.height);
+  surface.push();
+  surface.scale(0.9);
+  surface.translate(0.05 * surface.width, 0.03 * surface.height);
 
   // Draw line
-  p5.beginShape();
-  p5.curveVertex(xValues[0], yValues[0]);
+  surface.beginShape();
+  surface.curveVertex(xValues[0], yValues[0]);
   for (let i: number = 0; i < n; i++) {
     const x = xValues[i];
-    const y = (1 - yValues[i]) * p5.height;
-    p5.curveVertex(x, y);
+    const y = (1 - yValues[i]) * surface.height;
+    surface.curveVertex(x, y);
 
     // Also draw point for debugging
-    p5.ellipse(x, y, 10);
+    surface.ellipse(x, y, 10);
   }
-  p5.curveVertex(xValues[n - 1], yValues[n - 1]);
-  p5.endShape();
+  surface.curveVertex(xValues[n - 1], yValues[n - 1]);
+  surface.endShape();
 
   // Unset matrix
-  p5.pop();
+  surface.pop();
+};
+
+const draw = (p5: any): void => {
+  // Don't draw if no data
+  if (!ALBUM_AUDIO_FEATURES) return;
+
+  // Draw on the canvas by passing in p5
+  drawSurface(p5);
+
+  // Draw on the
+  drawSurface(GRAPHICS);
 
   // Stop the loop
   p5.noLoop();
-  // Save
-  // p5.save(CANVAS, 'out.png');
+};
+
+///////////
+// Other //
+///////////
+
+const mousePressed = (_p5: any) => {
+  GRAPHICS.save('out.png');
 };
 
 ////////////
 // Export //
 ////////////
 
-export default { preload, setup, draw };
+export default { preload, setup, draw, mousePressed };

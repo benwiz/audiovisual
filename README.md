@@ -28,3 +28,4 @@ To deploy just push all changes to GitHub.
 
 ## To Do
 
+- Change repo name, because this is going to be the whole website
