@@ -23,6 +23,8 @@ interface AudioFeatures {
 namespace SingleAudioFeatureSketch {
   export interface Configs {
     album: string;
+    color: string;
+    strokeWeight: number;
   }
 }
 
@@ -144,8 +146,8 @@ class SingleAudioFeatureSketch {
     );
 
     // Drawing configs
-    surface.stroke(159, 137, 88); // Saints gold
-    surface.strokeWeight(10);
+    surface.stroke(this.CONFIGS.color);
+    surface.strokeWeight(this.CONFIGS.strokeWeight);
     surface.noFill();
 
     // Set matrix to scale and translate so endpoints are visible
