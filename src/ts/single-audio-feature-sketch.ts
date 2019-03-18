@@ -135,8 +135,8 @@ class SingleAudioFeatureSketch {
 
     // Set matrix to scale and translate so endpoints are visible
     surface.push();
-    surface.scale(0.9);
-    surface.translate(0.05 * surface.width, 0.03 * surface.height);
+    surface.scale(0.98, 0.8);
+    surface.translate(0.01 * surface.width, 0.1 * surface.height);
 
     // Draw line
     surface.beginShape();
