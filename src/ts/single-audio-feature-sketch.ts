@@ -85,10 +85,9 @@ class SingleAudioFeatureSketch {
   ///////////
 
   setup = (p5: any): void => {
-    const widthRatio = 0.8;
+    const widthRatio = 0.9;
     const heightRatio = 0.25 * widthRatio;
-    // const w = widthRatio * p5.windowWidth;
-    const w = 1000;
+    const w = widthRatio * p5.windowWidth;
     const h = heightRatio * w;
     this.CANVAS = p5.createCanvas(w, h);
     const graphicsW = 8000;
@@ -135,8 +134,8 @@ class SingleAudioFeatureSketch {
 
     // Set matrix to scale and translate so endpoints are visible
     surface.push();
-    surface.scale(0.98, 0.8);
-    surface.translate(0.01 * surface.width, 0.1 * surface.height);
+    surface.scale(0.95, 0.8);
+    surface.translate(0.025 * surface.width, 0.1 * surface.height);
 
     // Draw line
     surface.beginShape();
