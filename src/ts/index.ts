@@ -1,16 +1,19 @@
 import * as P5 from 'p5/lib/p5.min';
 import * as Dat from 'dat.gui';
-import SingleAudioFeatureSketch from './single-audio-feature-sketch';
+import AlbumRiversSketch from './album-rivers-sketch';
 
-////////////////////
-// Sketch Configs //
-////////////////////
+/////////////
+// Dat.GUI //
+/////////////
 
-const singleAudioFeatureSketch = (
-  p5: P5,
-  configs: SingleAudioFeatureSketch.Configs,
-) => {
-  const sketch = new SingleAudioFeatureSketch(configs);
+const gui = new Dat.GUI();
+
+//////////////////
+// Album Rivers //
+//////////////////
+
+const albumRiversSketch = (p5: P5, configs: AlbumRiversSketch.Configs) => {
+  const sketch = new AlbumRiversSketch(configs);
 
   p5.preload = async () => {
     await sketch.preload(p5);
@@ -29,11 +32,7 @@ const singleAudioFeatureSketch = (
   };
 };
 
-////////////////////////
-// Creation Functions //
-////////////////////////
-
-const createAlbumRivers = (configs: SingleAudioFeatureSketch.Configs) => {
+const createAlbumRivers = (configs: AlbumRiversSketch.Configs) => {
   // Check to see if the #album-rivers div exists, if so delete it
   const id = 'album-rivers';
   const oldContainer = document.querySelector(`#${id}`);
@@ -63,21 +62,20 @@ const createAlbumRivers = (configs: SingleAudioFeatureSketch.Configs) => {
   for (const album of albums) {
     const clone = Object.assign({}, configs);
     clone.album = album;
-    new P5((p5: P5) => singleAudioFeatureSketch(p5, clone), 'album-rivers');
+    new P5((p5: P5) => albumRiversSketch(p5, clone), 'album-rivers');
   }
 };
 
 // Call all creation functions
-const albumRiversConfigs: SingleAudioFeatureSketch.Configs = {
+const albumRiversConfigs: AlbumRiversSketch.Configs = {
+  feature: 'energy',
   album: null,
   color: '#000000',
   strokeWeight: 10,
   drawPoint: false,
+  exportImageWidth: 8000,
 };
 createAlbumRivers(albumRiversConfigs);
-
-// Dat.GUI
-const gui = new Dat.GUI();
 
 // Album Rivers dat.gui
 const albumRiversChange = (_value: number) => {
@@ -85,6 +83,21 @@ const albumRiversChange = (_value: number) => {
 };
 const albumRiversFolder = gui.addFolder('Album Rivers');
 albumRiversFolder.open();
+albumRiversFolder
+  .add(albumRiversConfigs, 'feature', [
+    'danceability',
+    'energy',
+    'key',
+    'loudness',
+    'mode',
+    'speechiness',
+    'acousticness',
+    'instrumentalness',
+    'liveness',
+    'valence',
+    'tempo',
+  ])
+  .onChange(albumRiversChange);
 albumRiversFolder
   .addColor(albumRiversConfigs, 'color')
   .onChange(albumRiversChange);
@@ -94,4 +107,7 @@ albumRiversFolder
   .onChange(albumRiversChange);
 albumRiversFolder
   .add(albumRiversConfigs, 'drawPoint')
+  .onChange(albumRiversChange);
+albumRiversFolder
+  .add(albumRiversConfigs, 'exportImageWidth')
   .onChange(albumRiversChange);

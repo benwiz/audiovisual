@@ -1,4 +1,5 @@
 interface AudioFeatures {
+  [key: string]: number | string;
   // TODO: Put ranges or options in here in comments
   danceability: number;
   energy: number;
@@ -22,10 +23,12 @@ interface AudioFeatures {
 
 namespace SingleAudioFeatureSketch {
   export interface Configs {
+    feature: string;
     album: string;
     color: string;
     strokeWeight: number;
     drawPoint: boolean;
+    exportImageWidth: number;
   }
 }
 
@@ -102,14 +105,14 @@ class SingleAudioFeatureSketch {
     albumRiversDiv.appendChild(title);
 
     // Create canvas for web page visual
-    const widthRatio = 0.9;
-    const heightRatio = 0.25 * widthRatio;
+    const widthRatio = 0.66;
+    const heightRatio = 0.33 * widthRatio;
     const w = widthRatio * p5.windowWidth;
     const h = heightRatio * w;
     this.CANVAS = p5.createCanvas(w, h);
 
     // Create graphics for PNG download
-    const graphicsW = 8000;
+    const graphicsW = this.CONFIGS.exportImageWidth;
     const graphicsH = heightRatio * graphicsW;
     this.GRAPHICS = p5.createGraphics(graphicsW, graphicsH);
   }
@@ -127,8 +130,8 @@ class SingleAudioFeatureSketch {
   getYValues = (albumAudioFeatures: AudioFeatures[]) => {
     const result: number[] = [];
     for (const trackAudioFeature of albumAudioFeatures) {
-      const feature: number = trackAudioFeature.energy; // TODO: Generalize
-      result.push(feature);
+      const value: number = <number>trackAudioFeature[this.CONFIGS.feature];
+      result.push(value);
     }
     return result;
   }
@@ -158,7 +161,7 @@ class SingleAudioFeatureSketch {
 
     // Draw line
     surface.beginShape();
-    surface.curveVertex(xValues[0], yValues[0]);
+    surface.curveVertex(xValues[0], (1 - yValues[0]) * surface.height);
     for (let i: number = 0; i < n; i++) {
       // Draw curve
       const x = xValues[i];
@@ -170,7 +173,7 @@ class SingleAudioFeatureSketch {
         surface.ellipse(x, y, 10);
       }
     }
-    surface.curveVertex(xValues[n - 1], yValues[n - 1]);
+    surface.curveVertex(xValues[n - 1], (1 - yValues[n - 1]) * surface.height);
     surface.endShape();
 
     // Unset matrix
