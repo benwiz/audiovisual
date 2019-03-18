@@ -102,7 +102,7 @@ albumRiversFolder
   .addColor(albumRiversConfigs, 'color')
   .onChange(albumRiversChange);
 albumRiversFolder
-  .add(albumRiversConfigs, 'strokeWeight', 1, 100)
+  .add(albumRiversConfigs, 'strokeWeight', 1, 250)
   .step(1)
   .onChange(albumRiversChange);
 albumRiversFolder
