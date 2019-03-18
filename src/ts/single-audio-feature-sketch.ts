@@ -20,18 +20,24 @@ interface AudioFeatures {
   timeSignature: number;
 }
 
+namespace SingleAudioFeatureSketch {
+  export interface Configs {
+    album: string;
+  }
+}
+
 class SingleAudioFeatureSketch {
   /////////////////
   // Class Setup //
   /////////////////
 
-  ALBUM: string;
+  CONFIGS: SingleAudioFeatureSketch.Configs;
   CANVAS: any;
   GRAPHICS: any;
   ALBUM_AUDIO_FEATURES: AudioFeatures[];
 
-  constructor(album: string) {
-    this.ALBUM = album;
+  constructor(configs: SingleAudioFeatureSketch.Configs) {
+    this.CONFIGS = configs;
   }
 
   //////////
@@ -72,7 +78,7 @@ class SingleAudioFeatureSketch {
     // Get audio features for one album
     const audioFeaturesResponse: {
       audio_features: AudioFeatures[];
-    } = await this.api(`/data/${this.ALBUM}.json`);
+    } = await this.api(`/data/${this.CONFIGS.album}.json`);
     const albumAudioFeatures: AudioFeatures[] =
       audioFeaturesResponse.audio_features;
 
@@ -88,7 +94,7 @@ class SingleAudioFeatureSketch {
     // Write the album name
     const albumRiversDiv = document.querySelector('#album-rivers');
     const title = document.createElement('h3');
-    title.innerHTML = this.ALBUM;
+    title.innerHTML = this.CONFIGS.album;
     title.style.textDecoration = 'underline';
     albumRiversDiv.appendChild(title);
 
@@ -190,7 +196,7 @@ class SingleAudioFeatureSketch {
       p5.mouseY >= 0 &&
       p5.mouseY <= p5.height
     ) {
-      this.GRAPHICS.save(`${this.ALBUM}.png`);
+      this.GRAPHICS.save(`${this.CONFIGS.album}.png`);
     }
   }
 }

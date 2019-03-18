@@ -5,8 +5,11 @@ import SingleAudioFeatureSketch from './single-audio-feature-sketch';
 // Sketch Configs //
 ////////////////////
 
-const singleAudioFeatureSketch = (p5: P5, album: string) => {
-  const sketch = new SingleAudioFeatureSketch(album);
+const singleAudioFeatureSketch = (
+  p5: P5,
+  configs: SingleAudioFeatureSketch.Configs,
+) => {
+  const sketch = new SingleAudioFeatureSketch(configs);
 
   p5.preload = async () => {
     await sketch.preload(p5);
@@ -46,26 +49,27 @@ const createAlbumRivers = () => {
   title.innerHTML = 'Album Rivers';
   title.style.textDecoration = 'underline';
   container.appendChild(title);
+  //
+
+  // Set up configs
+  const configs: SingleAudioFeatureSketch.Configs = {
+    album: null,
+  };
 
   //
   // Actually run the sketches
   //
-  new P5(
-    (p5: P5) => singleAudioFeatureSketch(p5, 'vital-signs'),
-    'album-rivers',
-  );
-  new P5(
-    (p5: P5) => singleAudioFeatureSketch(p5, 'city-of-sound'),
-    'album-rivers',
-  );
-  new P5(
-    (p5: P5) => singleAudioFeatureSketch(p5, 'men-amongst-mountains'),
-    'album-rivers',
-  );
-  new P5(
-    (p5: P5) => singleAudioFeatureSketch(p5, 'take-good-care'),
-    'album-rivers',
-  );
+  configs.album = 'vital-signs';
+  new P5((p5: P5) => singleAudioFeatureSketch(p5, configs), 'album-rivers');
+
+  configs.album = 'city-of-sound';
+  new P5((p5: P5) => singleAudioFeatureSketch(p5, configs), 'album-rivers');
+
+  configs.album = 'men-amongst-mountains';
+  new P5((p5: P5) => singleAudioFeatureSketch(p5, configs), 'album-rivers');
+
+  configs.album = 'take-good-care';
+  new P5((p5: P5) => singleAudioFeatureSketch(p5, configs), 'album-rivers');
 };
 
 // Call all creation functions
