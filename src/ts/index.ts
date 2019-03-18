@@ -1,25 +1,27 @@
 import * as P5 from 'p5/lib/p5.min';
-// import * as P5SVG from 'p5.js-svg';
-// P5SVG(P5);
 import SingleAudioFeatureSketch from './single-audio-feature-sketch';
 
-const singleAudioFeatureSketch = (p5: P5) => {
+const singleAudioFeatureSketch = (p5: P5, album: string) => {
+  const sketch = new SingleAudioFeatureSketch(album);
+
   p5.preload = async () => {
-    await SingleAudioFeatureSketch.preload(p5);
+    await sketch.preload(p5);
   };
 
   p5.setup = () => {
-    SingleAudioFeatureSketch.setup(p5);
+    sketch.setup(p5);
   };
 
   p5.draw = () => {
-    SingleAudioFeatureSketch.draw(p5);
+    sketch.draw(p5);
   };
 
   p5.mousePressed = () => {
-    SingleAudioFeatureSketch.mousePressed(p5);
+    sketch.mousePressed(p5);
   };
 };
 
-const singleAudioFeatureCanvas = new P5(singleAudioFeatureSketch);
-// new P5(singleAudioFeatureSketch);
+new P5((p5: P5) => singleAudioFeatureSketch(p5, 'vital-signs'));
+new P5((p5: P5) => singleAudioFeatureSketch(p5, 'city-of-sound'));
+new P5((p5: P5) => singleAudioFeatureSketch(p5, 'men-amongst-mountains'));
+new P5((p5: P5) => singleAudioFeatureSketch(p5, 'take-good-care'));

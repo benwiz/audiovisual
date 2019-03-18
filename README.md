@@ -19,13 +19,14 @@ To deploy just push all changes to GitHub.
 ## Plan
 
 - Create the following patterns using Audio Features data only. Have a new canvas and download button for each song in album.
-  - Single feature plot
-    - Configs
-      - stroke width
-      - feature selector
-      - point display
-- 
 
 ## To Do
 
 - Change repo name, because this is going to be the whole website
+- Single feature plot
+  - Configs
+    - feature selector
+    - PNG download size
+    - stroke width
+    - color
+    - point display
