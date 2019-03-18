@@ -86,10 +86,11 @@ class SingleAudioFeatureSketch {
 
   setup = (p5: any): void => {
     // Write the album name
-    const body = document.querySelector('body');
+    const albumRiversDiv = document.querySelector('#album-rivers');
     const title = document.createElement('h3');
     title.innerHTML = this.ALBUM;
-    body.appendChild(title);
+    title.style.textDecoration = 'underline';
+    albumRiversDiv.appendChild(title);
 
     // Create canvas for web page visual
     const widthRatio = 0.9;
