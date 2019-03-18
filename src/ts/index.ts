@@ -30,20 +30,26 @@ const singleAudioFeatureSketch = (p5: P5, album: string) => {
 ////////////////////////
 
 const createAlbumRivers = () => {
-  const body = document.querySelector('body');
-
+  //
   // Create the div for holding all the album rivers
+  //
+  const body = document.querySelector('body');
   const container: HTMLElement = document.createElement('div');
   container.id = 'album-rivers';
   body.appendChild(container);
 
+  //
   // Create the UI for configs
+  //
+  // Title
   const title = document.createElement('h2');
   title.innerHTML = 'Album Rivers';
   title.style.textDecoration = 'underline';
   container.appendChild(title);
 
+  //
   // Actually run the sketches
+  //
   new P5(
     (p5: P5) => singleAudioFeatureSketch(p5, 'vital-signs'),
     'album-rivers',
