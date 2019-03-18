@@ -161,7 +161,6 @@ class SingleAudioFeatureSketch {
     if (!this.ALBUM_AUDIO_FEATURES) return;
 
     // Draw on the canvas by passing in p5
-    console.log(this.ALBUM, p5);
     this.drawSurface(p5);
 
     // Draw on the
@@ -175,8 +174,15 @@ class SingleAudioFeatureSketch {
   // Other //
   ///////////
 
-  mousePressed = (_p5: any) => {
-    this.GRAPHICS.save(`${this.ALBUM}.png`);
+  mousePressed = (p5: any) => {
+    if (
+      p5.mouseX >= 0 &&
+      p5.mouseX <= p5.width &&
+      p5.mouseY >= 0 &&
+      p5.mouseY <= p5.height
+    ) {
+      this.GRAPHICS.save(`${this.ALBUM}.png`);
+    }
   }
 }
 
