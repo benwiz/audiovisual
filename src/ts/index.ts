@@ -71,7 +71,8 @@ const createAlbumRivers = (configs: SingleAudioFeatureSketch.Configs) => {
 const albumRiversConfigs: SingleAudioFeatureSketch.Configs = {
   album: null,
   color: '#000000',
-  strokeWeight: 2,
+  strokeWeight: 10,
+  drawPoint: false,
 };
 createAlbumRivers(albumRiversConfigs);
 
@@ -88,6 +89,9 @@ albumRiversFolder
   .addColor(albumRiversConfigs, 'color')
   .onChange(albumRiversChange);
 albumRiversFolder
-  .add(albumRiversConfigs, 'strokeWeight', 1, 20)
+  .add(albumRiversConfigs, 'strokeWeight', 1, 100)
   .step(1)
+  .onChange(albumRiversChange);
+albumRiversFolder
+  .add(albumRiversConfigs, 'drawPoint')
   .onChange(albumRiversChange);

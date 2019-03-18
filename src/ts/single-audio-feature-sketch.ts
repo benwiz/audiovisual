@@ -25,6 +25,7 @@ namespace SingleAudioFeatureSketch {
     album: string;
     color: string;
     strokeWeight: number;
+    drawPoint: boolean;
   }
 }
 
@@ -145,26 +146,29 @@ class SingleAudioFeatureSketch {
       this.scale(y, Math.min(...yValues), Math.max(...yValues), 0, 1),
     );
 
-    // Drawing configs
+    // Set matrix to scale and translate so endpoints are visible
+    surface.push();
+    surface.scale(0.8, 0.8);
+    surface.translate(0.1 * surface.width, 0.1 * surface.height);
+
+    // Curve drawing configs
     surface.stroke(this.CONFIGS.color);
     surface.strokeWeight(this.CONFIGS.strokeWeight);
     surface.noFill();
-
-    // Set matrix to scale and translate so endpoints are visible
-    surface.push();
-    surface.scale(0.95, 0.8);
-    surface.translate(0.025 * surface.width, 0.1 * surface.height);
 
     // Draw line
     surface.beginShape();
     surface.curveVertex(xValues[0], yValues[0]);
     for (let i: number = 0; i < n; i++) {
+      // Draw curve
       const x = xValues[i];
       const y = (1 - yValues[i]) * surface.height;
       surface.curveVertex(x, y);
 
-      // Also draw point for debugging
-      surface.ellipse(x, y, 10);
+      // Draw point if desired
+      if (this.CONFIGS.drawPoint) {
+        surface.ellipse(x, y, 10);
+      }
     }
     surface.curveVertex(xValues[n - 1], yValues[n - 1]);
     surface.endShape();
