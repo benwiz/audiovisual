@@ -85,11 +85,20 @@ class SingleAudioFeatureSketch {
   ///////////
 
   setup = (p5: any): void => {
+    // Write the album name
+    const body = document.querySelector('body');
+    const title = document.createElement('h3');
+    title.innerHTML = this.ALBUM;
+    body.appendChild(title);
+
+    // Create canvas for web page visual
     const widthRatio = 0.9;
     const heightRatio = 0.25 * widthRatio;
     const w = widthRatio * p5.windowWidth;
     const h = heightRatio * w;
     this.CANVAS = p5.createCanvas(w, h);
+
+    // Create graphics for PNG download
     const graphicsW = 8000;
     const graphicsH = heightRatio * graphicsW;
     this.GRAPHICS = p5.createGraphics(graphicsW, graphicsH);
