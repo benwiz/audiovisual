@@ -1,6 +1,6 @@
 import * as P5 from 'p5/lib/p5.min';
 import * as Dat from 'dat.gui';
-import AlbumRiversSketch from './album-rivers-sketch';
+import AlbumRiversSketch from './audio-features-album-rivers-sketch';
 
 /////////////
 // Dat.GUI //

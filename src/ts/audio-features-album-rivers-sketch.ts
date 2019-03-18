@@ -1,3 +1,7 @@
+// This file uses Spotify's Audio Features API to draw a curve based off a
+// single feature across all songs on an album. For example, plot the energies
+// of each song and then connect the vertices with curves.
+
 interface AudioFeatures {
   [key: string]: number | string;
   // TODO: Put ranges or options in here in comments
@@ -15,8 +19,8 @@ interface AudioFeatures {
   type: string;
   id: string;
   uri: string;
-  trackHref: string;
   analysisUrl: string;
+  trackHref: string;
   durationMs: number;
   timeSignature: number;
 }
