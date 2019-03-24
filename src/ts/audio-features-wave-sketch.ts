@@ -2,28 +2,7 @@
 // single feature across all songs on an album. For example, plot the energies
 // of each song and then connect the vertices with curves.
 
-interface AudioFeatures {
-  [key: string]: number | string;
-  // TODO: Put ranges or options in here in comments
-  danceability: number;
-  energy: number;
-  key: number;
-  loudness: number;
-  mode: number;
-  speechiness: number;
-  acousticness: number;
-  instrumentalness: number;
-  liveness: number;
-  valence: number;
-  tempo: number;
-  type: string;
-  id: string;
-  uri: string;
-  analysisUrl: string;
-  trackHref: string;
-  durationMs: number;
-  timeSignature: number;
-}
+import './interfaces';
 
 namespace SingleAudioFeatureSketch {
   export interface Configs {
@@ -102,11 +81,11 @@ class SingleAudioFeatureSketch {
 
   setup = (p5: any): void => {
     // Write the album name
-    const albumRiversDiv = document.querySelector('#album-rivers');
+    const albumWavesDiv = document.querySelector('#album-waves');
     const title = document.createElement('h3');
     title.innerHTML = this.CONFIGS.album;
     title.style.textDecoration = 'underline';
-    albumRiversDiv.appendChild(title);
+    albumWavesDiv.appendChild(title);
 
     // Create canvas for web page visual
     const widthRatio = 0.66;

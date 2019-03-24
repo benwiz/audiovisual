@@ -1,6 +1,9 @@
+// TODO: File description
+
 import * as P5 from 'p5/lib/p5.min';
 import * as Dat from 'dat.gui';
-import WavesSketch from './audio-features-wave-sketch';
+import AudioFeaturesWavesSketch from './audio-features-wave-sketch';
+import AudioFeaturesSpirographsSketch from './audio-features-spirograph-sketch';
 
 /////////////
 // Dat.GUI //
@@ -8,12 +11,12 @@ import WavesSketch from './audio-features-wave-sketch';
 
 const gui = new Dat.GUI();
 
-//////////////////
-// Album Rivers //
-//////////////////
+/////////////////
+// Album Waves //
+/////////////////
 
-const wavesSketch = (p5: P5, configs: WavesSketch.Configs) => {
-  const sketch = new WavesSketch(configs);
+const wavesSketch = (p5: P5, configs: AudioFeaturesWavesSketch.Configs) => {
+  const sketch = new AudioFeaturesWavesSketch(configs);
 
   p5.preload = async () => {
     await sketch.preload(p5);
@@ -32,15 +35,15 @@ const wavesSketch = (p5: P5, configs: WavesSketch.Configs) => {
   };
 };
 
-const createWaves = (configs: WavesSketch.Configs) => {
-  // Check to see if the #album-rivers div exists, if so delete it
-  const id = 'album-rivers';
+const createWaves = (configs: AudioFeaturesWavesSketch.Configs) => {
+  // Check to see if the #album-waves div exists, if so delete it
+  const id = 'album-waves';
   const oldContainer = document.querySelector(`#${id}`);
   if (oldContainer) {
     oldContainer.remove();
   }
 
-  // Create the div for holding all the album rivers
+  // Create the div for holding all the album waves
   const body = document.querySelector('body');
   const container: HTMLElement = document.createElement('div');
   container.id = id;
@@ -48,7 +51,7 @@ const createWaves = (configs: WavesSketch.Configs) => {
 
   // Title
   const title = document.createElement('h2');
-  title.innerHTML = 'Album Rivers';
+  title.innerHTML = 'Album Waves';
   title.style.textDecoration = 'underline';
   container.appendChild(title);
 
@@ -62,12 +65,142 @@ const createWaves = (configs: WavesSketch.Configs) => {
   for (const album of albums) {
     const clone = Object.assign({}, configs);
     clone.album = album;
-    new P5((p5: P5) => wavesSketch(p5, clone), 'album-rivers');
+    new P5((p5: P5) => wavesSketch(p5, clone), 'album-waves');
   }
 };
 
-// Call all creation functions
-const wavesConfigs: WavesSketch.Configs = {
+// Album Waves dat.gui
+const wavesDatGUI = (configs: AudioFeaturesWavesSketch.Configs) => {
+  const wavesChange = (_value: number) => {
+    createWaves(configs);
+  };
+  const wavesFolder = gui.addFolder('Album Waves');
+  // wavesFolder.open();
+  wavesFolder
+    .add(configs, 'feature', [
+      'danceability',
+      'energy',
+      'key',
+      'loudness',
+      'mode',
+      'speechiness',
+      'acousticness',
+      'instrumentalness',
+      'liveness',
+      'valence',
+      'tempo',
+    ])
+    .onChange(wavesChange);
+  wavesFolder.addColor(configs, 'color').onChange(wavesChange);
+  wavesFolder
+    .add(configs, 'strokeWeight', 1, 250)
+    .step(1)
+    .onChange(wavesChange);
+  wavesFolder.add(configs, 'drawPoint').onChange(wavesChange);
+  wavesFolder.add(configs, 'exportImageWidth').onChange(wavesChange);
+};
+
+///////////////////////
+// Spirograph Sketch //
+///////////////////////
+
+const spirographSketch = (
+  p5: P5,
+  configs: AudioFeaturesSpirographsSketch.Configs,
+) => {
+  const sketch = new AudioFeaturesSpirographsSketch(configs);
+
+  p5.preload = async () => {
+    await sketch.preload(p5);
+  };
+
+  p5.setup = () => {
+    sketch.setup(p5);
+  };
+
+  p5.draw = () => {
+    sketch.draw(p5);
+  };
+
+  p5.mousePressed = () => {
+    sketch.mousePressed(p5);
+  };
+};
+
+const createSpirographs = (configs: AudioFeaturesSpirographsSketch.Configs) => {
+  // Check to see if the #album-features-spirographs div exists, if so delete it
+  const id = 'album-features-spirographs';
+  const oldContainer = document.querySelector(`#${id}`);
+  if (oldContainer) {
+    oldContainer.remove();
+  }
+
+  // Create the div for holding all the spirographs
+  const body = document.querySelector('body');
+  const container: HTMLElement = document.createElement('div');
+  container.id = id;
+  body.appendChild(container);
+
+  // Title
+  const title = document.createElement('h2');
+  title.innerHTML = 'Track Spirographs';
+  title.style.textDecoration = 'underline';
+  container.appendChild(title);
+
+  // Actually run the sketches
+  const albums = [
+    'vital-signs',
+    // 'city-of-sound',
+    // 'men-amongst-mountains',
+    // 'take-good-care',
+  ];
+  for (const album of albums) {
+    const clone = Object.assign({}, configs);
+    clone.album = album;
+    new P5(
+      (p5: P5) => spirographSketch(p5, clone),
+      'album-features-spirographs',
+    );
+  }
+};
+
+// // Album Waves dat.gui
+// const wavesDatGUI = (configs: AudioFeaturesWavesSketch.Configs) => {
+//   const wavesChange = (_value: number) => {
+//     createWaves(configs);
+//   };
+//   const wavesFolder = gui.addFolder('Album Waves');
+//   wavesFolder.open();
+//   wavesFolder
+//     .add(configs, 'feature', [
+//       'danceability',
+//       'energy',
+//       'key',
+//       'loudness',
+//       'mode',
+//       'speechiness',
+//       'acousticness',
+//       'instrumentalness',
+//       'liveness',
+//       'valence',
+//       'tempo',
+//     ])
+//     .onChange(wavesChange);
+//   wavesFolder.addColor(configs, 'color').onChange(wavesChange);
+//   wavesFolder
+//     .add(configs, 'strokeWeight', 1, 250)
+//     .step(1)
+//     .onChange(wavesChange);
+//   wavesFolder.add(configs, 'drawPoint').onChange(wavesChange);
+//   wavesFolder.add(configs, 'exportImageWidth').onChange(wavesChange);
+// };
+
+////////////////
+// Executions //
+////////////////
+
+// Album Waves
+const wavesConfigs: AudioFeaturesWavesSketch.Configs = {
   feature: 'energy',
   album: null,
   color: '#000000',
@@ -76,32 +209,10 @@ const wavesConfigs: WavesSketch.Configs = {
   exportImageWidth: 8000,
 };
 createWaves(wavesConfigs);
+wavesDatGUI(wavesConfigs);
 
-// Album Rivers dat.gui
-const wavesChange = (_value: number) => {
-  createWaves(wavesConfigs);
+// Audio Features Spirograph Sketch
+const spirographsConfigs: AudioFeaturesSpirographsSketch.Configs = {
+  album: null,
 };
-const wavesFolder = gui.addFolder('Album Rivers');
-wavesFolder.open();
-wavesFolder
-  .add(wavesConfigs, 'feature', [
-    'danceability',
-    'energy',
-    'key',
-    'loudness',
-    'mode',
-    'speechiness',
-    'acousticness',
-    'instrumentalness',
-    'liveness',
-    'valence',
-    'tempo',
-  ])
-  .onChange(wavesChange);
-wavesFolder.addColor(wavesConfigs, 'color').onChange(wavesChange);
-wavesFolder
-  .add(wavesConfigs, 'strokeWeight', 1, 250)
-  .step(1)
-  .onChange(wavesChange);
-wavesFolder.add(wavesConfigs, 'drawPoint').onChange(wavesChange);
-wavesFolder.add(wavesConfigs, 'exportImageWidth').onChange(wavesChange);
+createSpirographs(spirographsConfigs);
