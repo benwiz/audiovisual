@@ -75,7 +75,7 @@ class AudioFeaturesSpirographSketch {
     this.TRACK_AUDIO_FEATURES = albumAudioFeatures[this.CONFIGS.trackIndex];
 
     // TODO: Need to include track name
-    this.TRACK_AUDIO_FEATURES.name = this.TRACK_AUDIO_FEATURES.id;
+    this.TRACK_AUDIO_FEATURES.name = this.TRACK_AUDIO_FEATURES.uri;
   }
 
   ///////////
@@ -85,8 +85,17 @@ class AudioFeaturesSpirographSketch {
   setup = (p5: any): void => {};
 
   runSetup = (p5: any): void => {
+    // Create container
+    const albumContainer = document.querySelector(
+      `#audio-features-spirographs-${this.CONFIGS.album}`,
+    );
+    const container: HTMLElement = document.createElement('div');
+    container.id = `audio-features-spirographs-${this.CONFIGS.album}-${
+      this.TRACK_AUDIO_FEATURES.name
+    }`;
+    albumContainer.appendChild(container);
+
     // Write the track title, if no track name yet
-    const container = document.querySelector('#audio-features-spirographs');
     const title = document.createElement('h5');
     title.innerHTML = <string>this.TRACK_AUDIO_FEATURES.name;
     container.appendChild(title);
@@ -96,10 +105,11 @@ class AudioFeaturesSpirographSketch {
     const w = ratio * p5.windowWidth;
     const h = w;
     this.CANVAS = p5.createCanvas(w, h);
+    this.CANVAS.parent(container.id);
 
     // Create graphics for PNG download
     const graphicsW = this.CONFIGS.exportImageWidth;
-    const graphicsH = ratio * graphicsW;
+    const graphicsH = graphicsW;
     this.GRAPHICS = p5.createGraphics(graphicsW, graphicsH);
   }
 
@@ -146,7 +156,7 @@ class AudioFeaturesSpirographSketch {
       p5.mouseY >= 0 &&
       p5.mouseY <= p5.height
     ) {
-      // this.GRAPHICS.save(`${this.CONFIGS.album}.png`);
+      this.GRAPHICS.save(`${this.TRACK_AUDIO_FEATURES.name}.png`);
     }
   }
 }

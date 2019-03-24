@@ -150,16 +150,22 @@ const createSpirographs = (configs: AudioFeaturesSpirographsSketch.Configs) => {
   // Actually run the sketches
   const albums = [
     { name: 'vital-signs', numTracks: 12 },
-    // 'city-of-sound',
-    // 'men-amongst-mountains',
-    // 'take-good-care',
+    { name: 'city-of-sound', numTracks: 10 },
+    { name: 'men-amongst-mountains', numTracks: 14 },
+    { name: 'take-good-care', numTracks: 14 },
   ];
   for (const album of albums) {
+    // Create div for album
+    const albumContainer: HTMLElement = document.createElement('div');
+    const albumContainerID = `audio-features-spirographs-${album.name}`;
+    albumContainer.id = albumContainerID;
+    container.appendChild(albumContainer);
+
     // Album Title
     const albumTitle = document.createElement('h3');
     albumTitle.innerHTML = album.name;
     albumTitle.style.textDecoration = 'underline';
-    container.appendChild(albumTitle);
+    albumContainer.appendChild(albumTitle);
 
     // Start the sketch
     for (let i: number = 0; i < album.numTracks; i++) {
@@ -168,7 +174,7 @@ const createSpirographs = (configs: AudioFeaturesSpirographsSketch.Configs) => {
       clone.trackIndex = i;
       new P5(
         (p5: P5) => spirographSketch(p5, clone),
-        'audio-features-spirographs',
+        `audio-features-spirographs-${album.name}`,
       );
     }
   }
