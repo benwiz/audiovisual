@@ -174,7 +174,7 @@ class AudioFeaturesSpirographSketch {
     this.drawSurface(p5, this.SINES);
 
     // Draw on the
-    // this.drawSurface(this.GRAPHICS, this.SINES);
+    this.drawSurface(this.GRAPHICS, [...this.SINES]);
 
     // // Stop the loop
     // p5.noLoop();
