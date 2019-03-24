@@ -6,6 +6,8 @@ import './interfaces';
 namespace AudioFeaturesSpirographSketch {
   export interface Configs {
     album: string;
+    trackIndex: number;
+    exportImageWidth: number;
   }
 }
 
@@ -18,6 +20,7 @@ class AudioFeaturesSpirographSketch {
   CANVAS: any;
   GRAPHICS: any;
   ALBUM_AUDIO_FEATURES: AudioFeatures[];
+  TRACK_AUDIO_FEATURES: AudioFeatures;
 
   constructor(configs: AudioFeaturesSpirographSketch.Configs) {
     this.CONFIGS = configs;
@@ -67,14 +70,37 @@ class AudioFeaturesSpirographSketch {
 
     // Save in global variable
     this.ALBUM_AUDIO_FEATURES = albumAudioFeatures;
+
+    // Save track audio features
+    this.TRACK_AUDIO_FEATURES = albumAudioFeatures[this.CONFIGS.trackIndex];
+
+    // TODO: Need to include track name
+    this.TRACK_AUDIO_FEATURES.name = this.TRACK_AUDIO_FEATURES.id;
   }
 
   ///////////
   // Setup //
   ///////////
 
-  setup = (p5: any): void => {
-    console.log('setup');
+  setup = (p5: any): void => {};
+
+  runSetup = (p5: any): void => {
+    // Write the track title, if no track name yet
+    const container = document.querySelector('#audio-features-spirographs');
+    const title = document.createElement('h5');
+    title.innerHTML = <string>this.TRACK_AUDIO_FEATURES.name;
+    container.appendChild(title);
+
+    // Create canvas for web page visual
+    const ratio = 0.25;
+    const w = ratio * p5.windowWidth;
+    const h = w;
+    this.CANVAS = p5.createCanvas(w, h);
+
+    // Create graphics for PNG download
+    const graphicsW = this.CONFIGS.exportImageWidth;
+    const graphicsH = ratio * graphicsW;
+    this.GRAPHICS = p5.createGraphics(graphicsW, graphicsH);
   }
 
   //////////
@@ -83,15 +109,21 @@ class AudioFeaturesSpirographSketch {
 
   drawSurface = (surface: any): void => {
     // Do not set background color to keep it transparent
-    surface.stroke('red');
-    surface.fill('red');
-    surface.ellipse(surface.width / 2, surface.height / 2, 50);
+    const energy: number = this.TRACK_AUDIO_FEATURES.energy;
+    const color: number = this.scale(energy, 0, 1, 0, 255);
+    surface.stroke(color);
+    surface.fill(color);
+    surface.ellipse(surface.width / 2, surface.height / 2, color);
   }
 
   draw = (p5: any): void => {
     // Don't draw if no data
-    if (!this.ALBUM_AUDIO_FEATURES) return;
-    console.log('draw');
+    if (!this.TRACK_AUDIO_FEATURES) return;
+
+    // Run setup if not run yet... running here because setup isn't waiting for preload
+    if (!this.CANVAS) {
+      this.runSetup(p5);
+    }
 
     // Draw on the canvas by passing in p5
     this.drawSurface(p5);

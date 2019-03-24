@@ -128,8 +128,8 @@ const spirographSketch = (
 };
 
 const createSpirographs = (configs: AudioFeaturesSpirographsSketch.Configs) => {
-  // Check to see if the #album-features-spirographs div exists, if so delete it
-  const id = 'album-features-spirographs';
+  // Check to see if the #audio-features-spirographs div exists, if so delete it
+  const id = 'audio-features-spirographs';
   const oldContainer = document.querySelector(`#${id}`);
   if (oldContainer) {
     oldContainer.remove();
@@ -149,51 +149,30 @@ const createSpirographs = (configs: AudioFeaturesSpirographsSketch.Configs) => {
 
   // Actually run the sketches
   const albums = [
-    'vital-signs',
+    { name: 'vital-signs', numTracks: 12 },
     // 'city-of-sound',
     // 'men-amongst-mountains',
     // 'take-good-care',
   ];
   for (const album of albums) {
-    const clone = Object.assign({}, configs);
-    clone.album = album;
-    new P5(
-      (p5: P5) => spirographSketch(p5, clone),
-      'album-features-spirographs',
-    );
+    // Album Title
+    const albumTitle = document.createElement('h3');
+    albumTitle.innerHTML = album.name;
+    albumTitle.style.textDecoration = 'underline';
+    container.appendChild(albumTitle);
+
+    // Start the sketch
+    for (let i: number = 0; i < album.numTracks; i++) {
+      const clone = Object.assign({}, configs);
+      clone.album = album.name;
+      clone.trackIndex = i;
+      new P5(
+        (p5: P5) => spirographSketch(p5, clone),
+        'audio-features-spirographs',
+      );
+    }
   }
 };
-
-// // Album Waves dat.gui
-// const wavesDatGUI = (configs: AudioFeaturesWavesSketch.Configs) => {
-//   const wavesChange = (_value: number) => {
-//     createWaves(configs);
-//   };
-//   const wavesFolder = gui.addFolder('Album Waves');
-//   wavesFolder.open();
-//   wavesFolder
-//     .add(configs, 'feature', [
-//       'danceability',
-//       'energy',
-//       'key',
-//       'loudness',
-//       'mode',
-//       'speechiness',
-//       'acousticness',
-//       'instrumentalness',
-//       'liveness',
-//       'valence',
-//       'tempo',
-//     ])
-//     .onChange(wavesChange);
-//   wavesFolder.addColor(configs, 'color').onChange(wavesChange);
-//   wavesFolder
-//     .add(configs, 'strokeWeight', 1, 250)
-//     .step(1)
-//     .onChange(wavesChange);
-//   wavesFolder.add(configs, 'drawPoint').onChange(wavesChange);
-//   wavesFolder.add(configs, 'exportImageWidth').onChange(wavesChange);
-// };
 
 ////////////////
 // Executions //
@@ -214,5 +193,7 @@ wavesDatGUI(wavesConfigs);
 // Audio Features Spirograph Sketch
 const spirographsConfigs: AudioFeaturesSpirographsSketch.Configs = {
   album: null,
+  trackIndex: 0,
+  exportImageWidth: 4000,
 };
 createSpirographs(spirographsConfigs);
