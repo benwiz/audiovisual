@@ -21,6 +21,7 @@ class AudioFeaturesSpirographSketch {
   GRAPHICS: any;
   ALBUM_AUDIO_FEATURES: AudioFeatures[];
   TRACK_AUDIO_FEATURES: AudioFeatures;
+  SINES: number[];
 
   constructor(configs: AudioFeaturesSpirographSketch.Configs) {
     this.CONFIGS = configs;
@@ -82,6 +83,14 @@ class AudioFeaturesSpirographSketch {
   // Setup //
   ///////////
 
+  setupSines = (p5: any, n: number): number[] => {
+    const sines: number[] = new Array(n);
+    for (let i: number = 0; i < sines.length; i++) {
+      sines[i] = p5.PI; // start all sines facing NORTH
+    }
+    return sines;
+  }
+
   setup = (p5: any): void => {};
 
   runSetup = (p5: any): void => {
@@ -111,19 +120,45 @@ class AudioFeaturesSpirographSketch {
     const graphicsW = this.CONFIGS.exportImageWidth;
     const graphicsH = graphicsW;
     this.GRAPHICS = p5.createGraphics(graphicsW, graphicsH);
+
+    // Create the sines (circles) for the spirograph
+    this.SINES = this.setupSines(p5, 10);
   }
 
   //////////
   // Draw //
   //////////
 
-  drawSurface = (surface: any): void => {
-    // Do not set background color to keep it transparent
-    const energy: number = this.TRACK_AUDIO_FEATURES.energy;
-    const color: number = this.scale(energy, 0, 1, 0, 255);
-    surface.stroke(color);
-    surface.fill(color);
-    surface.ellipse(surface.width / 2, surface.height / 2, color);
+  drawSurface = (surface: any, sines: number[]): void => {
+    // Some configs
+    const fund = 0.005; // the speed of the central sine
+    const ratio = 1; // what multiplier for speed is each additional sine?
+    const alpha = 50; // how opaque is the tracing system
+
+    // Some "globals"
+    const rad = surface.height / 4; // compute radius for central circle
+
+    surface.push();
+    surface.translate(surface.width / 2, surface.height / 2);
+
+    for (let i: number = 0; i < sines.length; i++) {
+      let erad = 0; // radius for small "point" within circle... this is the 'pen' when tracing
+      surface.stroke(0, 0, 255 * (surface.float(i) / sines.length), alpha); // blue
+      surface.fill(0, 0, 255, alpha / 2); // also, um, blue
+      erad = 5.0 * (1.0 - surface.float(i) / sines.length); // pen width will be related to which sine
+      const radius = rad / (i + 1); // radius for circle itself
+      surface.rotate(sines[i]); // rotate circle
+
+      surface.push(); // go up one level
+      surface.translate(0, radius); // move to sine edge
+      surface.ellipse(0, 0, erad, erad); // draw with erad
+      surface.pop(); // go down one level
+
+      surface.translate(0, radius); // move into position for next sine
+      sines[i] = (sines[i] + (fund + fund * i * ratio)) % surface.TWO_PI; // update angle based on fundamental
+    }
+
+    surface.pop();
   }
 
   draw = (p5: any): void => {
@@ -136,13 +171,13 @@ class AudioFeaturesSpirographSketch {
     }
 
     // Draw on the canvas by passing in p5
-    this.drawSurface(p5);
+    this.drawSurface(p5, this.SINES);
 
     // Draw on the
-    this.drawSurface(this.GRAPHICS);
+    // this.drawSurface(this.GRAPHICS, this.SINES);
 
-    // Stop the loop
-    p5.noLoop();
+    // // Stop the loop
+    // p5.noLoop();
   }
 
   ///////////
