@@ -170,14 +170,18 @@ class AudioFeaturesSpirographSketch {
       this.runSetup(p5);
     }
 
-    // Draw on the canvas by passing in p5
-    this.drawSurface(p5, this.SINES);
+    const energy = this.TRACK_AUDIO_FEATURES.energy;
+    const iterations: number = this.scale(energy, 0, 1, 300, 1200);
+    for (let i: number = 0; i < iterations; i++) {
+      // Draw on the canvas by passing in p5
+      this.drawSurface(p5, this.SINES);
 
-    // Draw on the
-    this.drawSurface(this.GRAPHICS, [...this.SINES]);
+      // Draw on the
+      this.drawSurface(this.GRAPHICS, [...this.SINES]);
+    }
 
-    // // Stop the loop
-    // p5.noLoop();
+    // Stop the loop
+    p5.noLoop();
   }
 
   ///////////
