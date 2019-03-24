@@ -150,9 +150,9 @@ const createSpirographs = (configs: AudioFeaturesSpirographsSketch.Configs) => {
   // Actually run the sketches
   const albums = [
     { name: 'vital-signs', numTracks: 12 },
-    { name: 'city-of-sound', numTracks: 10 },
-    { name: 'men-amongst-mountains', numTracks: 14 },
-    { name: 'take-good-care', numTracks: 14 },
+    // { name: 'city-of-sound', numTracks: 10 },
+    // { name: 'men-amongst-mountains', numTracks: 14 },
+    // { name: 'take-good-care', numTracks: 14 },
   ];
   for (const album of albums) {
     // Create div for album
