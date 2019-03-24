@@ -1,6 +1,6 @@
 import * as P5 from 'p5/lib/p5.min';
 import * as Dat from 'dat.gui';
-import AlbumRiversSketch from './audio-features-album-rivers-sketch';
+import WavesSketch from './audio-features-wave-sketch';
 
 /////////////
 // Dat.GUI //
@@ -12,8 +12,8 @@ const gui = new Dat.GUI();
 // Album Rivers //
 //////////////////
 
-const albumRiversSketch = (p5: P5, configs: AlbumRiversSketch.Configs) => {
-  const sketch = new AlbumRiversSketch(configs);
+const wavesSketch = (p5: P5, configs: WavesSketch.Configs) => {
+  const sketch = new WavesSketch(configs);
 
   p5.preload = async () => {
     await sketch.preload(p5);
@@ -32,7 +32,7 @@ const albumRiversSketch = (p5: P5, configs: AlbumRiversSketch.Configs) => {
   };
 };
 
-const createAlbumRivers = (configs: AlbumRiversSketch.Configs) => {
+const createWaves = (configs: WavesSketch.Configs) => {
   // Check to see if the #album-rivers div exists, if so delete it
   const id = 'album-rivers';
   const oldContainer = document.querySelector(`#${id}`);
@@ -62,12 +62,12 @@ const createAlbumRivers = (configs: AlbumRiversSketch.Configs) => {
   for (const album of albums) {
     const clone = Object.assign({}, configs);
     clone.album = album;
-    new P5((p5: P5) => albumRiversSketch(p5, clone), 'album-rivers');
+    new P5((p5: P5) => wavesSketch(p5, clone), 'album-rivers');
   }
 };
 
 // Call all creation functions
-const albumRiversConfigs: AlbumRiversSketch.Configs = {
+const wavesConfigs: WavesSketch.Configs = {
   feature: 'energy',
   album: null,
   color: '#000000',
@@ -75,16 +75,16 @@ const albumRiversConfigs: AlbumRiversSketch.Configs = {
   drawPoint: false,
   exportImageWidth: 8000,
 };
-createAlbumRivers(albumRiversConfigs);
+createWaves(wavesConfigs);
 
 // Album Rivers dat.gui
-const albumRiversChange = (_value: number) => {
-  createAlbumRivers(albumRiversConfigs);
+const wavesChange = (_value: number) => {
+  createWaves(wavesConfigs);
 };
-const albumRiversFolder = gui.addFolder('Album Rivers');
-albumRiversFolder.open();
-albumRiversFolder
-  .add(albumRiversConfigs, 'feature', [
+const wavesFolder = gui.addFolder('Album Rivers');
+wavesFolder.open();
+wavesFolder
+  .add(wavesConfigs, 'feature', [
     'danceability',
     'energy',
     'key',
@@ -97,17 +97,11 @@ albumRiversFolder
     'valence',
     'tempo',
   ])
-  .onChange(albumRiversChange);
-albumRiversFolder
-  .addColor(albumRiversConfigs, 'color')
-  .onChange(albumRiversChange);
-albumRiversFolder
-  .add(albumRiversConfigs, 'strokeWeight', 1, 250)
+  .onChange(wavesChange);
+wavesFolder.addColor(wavesConfigs, 'color').onChange(wavesChange);
+wavesFolder
+  .add(wavesConfigs, 'strokeWeight', 1, 250)
   .step(1)
-  .onChange(albumRiversChange);
-albumRiversFolder
-  .add(albumRiversConfigs, 'drawPoint')
-  .onChange(albumRiversChange);
-albumRiversFolder
-  .add(albumRiversConfigs, 'exportImageWidth')
-  .onChange(albumRiversChange);
+  .onChange(wavesChange);
+wavesFolder.add(wavesConfigs, 'drawPoint').onChange(wavesChange);
+wavesFolder.add(wavesConfigs, 'exportImageWidth').onChange(wavesChange);
