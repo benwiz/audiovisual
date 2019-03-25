@@ -148,46 +148,50 @@ class AudioFeaturesSpirographSketch {
     } = this.TRACK_AUDIO_FEATURES;
 
     // Some configs
-    const fundamental = this.scale(energy, 0, 1, 0.001, 0.02); // 0.005; // the speed of the central sine
-    const ratio = this.scale(tempo, 50, 200, 0.5, 2.5); // what multiplier for speed is each additional sine?
-    const alpha = 50; // how opaque is the tracing system
+    const fundamental = this.scale(energy, 0, 1, 0.001, 0.02); // 0.005; // the speed of the central sine ~0.005 is good
+    const ratio = this.scale(tempo, 50, 180, 0.5, 2); // what multiplier for speed is each additional sine? ~1 is good
+    const alpha = this.scale(danceability, 0, 1, 35, 70); // how opaque is the tracing system [0, 100]
 
     // Some "globals"
     const circleRadius = surface.height / 4; // compute radius for central circle
 
-    // Translate to center and create matrix to draw on
-    surface.push();
-    surface.translate(surface.width / 2, surface.height / 2);
+    // Iterations is how much of the spirograph to draw
+    const iterations: number = this.scale(energy, 0, 1, 500, 1300);
+    for (let i: number = 0; i < iterations; i++) {
+      // Translate to center and create matrix to draw on
+      surface.push();
+      surface.translate(surface.width / 2, surface.height / 2);
 
-    // Draw each sine
-    for (let i: number = 0; i < sines.length; i++) {
-      // Set color
-      surface.stroke(0, 0, 255 * (surface.float(i) / sines.length), alpha);
-      surface.fill(0, 0, 255, alpha / 2);
+      // Draw each sine
+      for (let i: number = 0; i < sines.length; i++) {
+        // Set color
+        surface.stroke(0, 0, 255 * (surface.float(i) / sines.length), alpha);
+        surface.fill(0, 0, 255, alpha / 2);
 
-      // Set pen radius
-      const penRadius = 1.0 * (1.0 - surface.float(i) / sines.length); // pen width will be related to which sine
+        // Set pen radius
+        const penRadius = 1.0 * (1.0 - surface.float(i) / sines.length); // pen width will be related to which sine
 
-      // Set circle radius
-      const radius = circleRadius / (i + 1); // radius for circle itself
-      surface.rotate(sines[i]); // rotate circle
+        // Set circle radius
+        const radius = circleRadius / (i + 1); // radius for circle itself
+        surface.rotate(sines[i]); // rotate circle
 
-      // The actual drawing
-      surface.push(); // go up one level
-      surface.translate(0, radius); // move to sine edge
-      // Draw everything except first sine
-      if (i > 0) {
-        // TODO: Possibly skip other SINES based on some audio features
-        surface.ellipse(0, 0, penRadius, penRadius); // draw with penRadius
+        // The actual drawing
+        surface.push(); // go up one level
+        surface.translate(0, radius); // move to sine edge
+        // Draw everything except first sine
+        if (i > 0) {
+          // TODO: Possibly skip other SINES based on some audio features
+          surface.ellipse(0, 0, penRadius, penRadius); // draw with penRadius
+        }
+        surface.pop(); // go down one level
+
+        surface.translate(0, radius); // move into position for next sine
+        sines[i] =
+          (sines[i] + (fundamental + fundamental * i * ratio)) % surface.TWO_PI; // update angle based on fundamental
       }
-      surface.pop(); // go down one level
 
-      surface.translate(0, radius); // move into position for next sine
-      sines[i] =
-        (sines[i] + (fundamental + fundamental * i * ratio)) % surface.TWO_PI; // update angle based on fundamental
+      surface.pop();
     }
-
-    surface.pop();
   }
 
   draw = (p5: any): void => {
@@ -199,15 +203,11 @@ class AudioFeaturesSpirographSketch {
       this.runSetup(p5);
     }
 
-    const energy = this.TRACK_AUDIO_FEATURES.energy;
-    const iterations: number = this.scale(energy, 0, 1, 500, 1000);
-    for (let i: number = 0; i < iterations; i++) {
-      // Draw on the canvas by passing in p5
-      this.drawSurface(p5, this.SINES);
+    // Draw on the canvas by passing in p5
+    this.drawSurface(p5, this.SINES);
 
-      // Draw on the
-      this.drawSurface(this.GRAPHICS, [...this.SINES]);
-    }
+    // Draw on the
+    this.drawSurface(this.GRAPHICS, [...this.SINES]);
 
     // Stop the loop
     p5.noLoop();
