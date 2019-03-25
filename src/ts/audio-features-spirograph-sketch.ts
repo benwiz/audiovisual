@@ -141,29 +141,35 @@ class AudioFeaturesSpirographSketch {
     const {
       energy,
       danceability,
-      key,
       loudness,
       mode,
       instrumentalness,
+      tempo,
     } = this.TRACK_AUDIO_FEATURES;
 
     // Some configs
-    const fund = this.scale(energy, 0, 1, 0.001, 0.02); // 0.005; // the speed of the central sine
-    const ratio = 1; // what multiplier for speed is each additional sine?
+    const fundamental = this.scale(energy, 0, 1, 0.001, 0.02); // 0.005; // the speed of the central sine
+    const ratio = this.scale(tempo, 50, 200, 0.5, 2.5); // what multiplier for speed is each additional sine?
     const alpha = 50; // how opaque is the tracing system
 
     // Some "globals"
-    const rad = surface.height / 4; // compute radius for central circle
+    const circleRadius = surface.height / 4; // compute radius for central circle
 
+    // Translate to center and create matrix to draw on
     surface.push();
     surface.translate(surface.width / 2, surface.height / 2);
 
+    // Draw each sine
     for (let i: number = 0; i < sines.length; i++) {
-      let penRadius = 0; // radius for small "point" within circle... this is the 'pen' when tracing
+      // Set color
       surface.stroke(0, 0, 255 * (surface.float(i) / sines.length), alpha);
       surface.fill(0, 0, 255, alpha / 2);
-      penRadius = 1.0 * (1.0 - surface.float(i) / sines.length); // pen width will be related to which sine
-      const radius = rad / (i + 1); // radius for circle itself
+
+      // Set pen radius
+      const penRadius = 1.0 * (1.0 - surface.float(i) / sines.length); // pen width will be related to which sine
+
+      // Set circle radius
+      const radius = circleRadius / (i + 1); // radius for circle itself
       surface.rotate(sines[i]); // rotate circle
 
       // The actual drawing
@@ -177,7 +183,8 @@ class AudioFeaturesSpirographSketch {
       surface.pop(); // go down one level
 
       surface.translate(0, radius); // move into position for next sine
-      sines[i] = (sines[i] + (fund + fund * i * ratio)) % surface.TWO_PI; // update angle based on fundamental
+      sines[i] =
+        (sines[i] + (fundamental + fundamental * i * ratio)) % surface.TWO_PI; // update angle based on fundamental
     }
 
     surface.pop();
