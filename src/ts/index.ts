@@ -155,17 +155,19 @@ const createSpirographs = (configs: AudioFeaturesSpirographsSketch.Configs) => {
     // { name: 'take-good-care', numTracks: 14 },
   ];
   for (const album of albums) {
-    // Create div for album
-    const albumContainer: HTMLElement = document.createElement('div');
-    const albumContainerID = `audio-features-spirographs-${album.name}`;
-    albumContainer.id = albumContainerID;
-    container.appendChild(albumContainer);
-
     // Album Title
     const albumTitle = document.createElement('h3');
     albumTitle.innerHTML = album.name;
     albumTitle.style.textDecoration = 'underline';
-    albumContainer.appendChild(albumTitle);
+    container.appendChild(albumTitle);
+
+    // Create div for album
+    const albumContainer: HTMLElement = document.createElement('div');
+    const albumContainerID = `audio-features-spirographs-${album.name}`;
+    albumContainer.id = albumContainerID;
+    albumContainer.style.display = 'grid';
+    albumContainer.style.gridTemplateColumns = 'auto auto auto';
+    container.appendChild(albumContainer);
 
     // Start the sketch
     for (let i: number = 0; i < album.numTracks; i++) {
