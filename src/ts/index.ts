@@ -58,9 +58,9 @@ const createWaves = (configs: AudioFeaturesWavesSketch.Configs) => {
   // Actually run the sketches
   const albums = [
     'vital-signs',
-    // 'city-of-sound',
-    // 'men-amongst-mountains',
-    // 'take-good-care',
+    'city-of-sound',
+    'men-amongst-mountains',
+    'take-good-care',
   ];
   for (const album of albums) {
     const clone = Object.assign({}, configs);

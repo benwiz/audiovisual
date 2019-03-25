@@ -84,9 +84,12 @@ class AudioFeaturesSpirographSketch {
   ///////////
 
   setupSines = (p5: any, n: number): number[] => {
+    const key = this.TRACK_AUDIO_FEATURES.key;
+    const sine = 1 + this.scale(key, 0, 11, 0, p5.TWO_PI);
+
     const sines: number[] = new Array(n);
     for (let i: number = 0; i < sines.length; i++) {
-      sines[i] = p5.PI; // start all sines facing NORTH
+      sines[i] = sine * Math.max(1, i); // north is p5.PI
     }
     return sines;
   }
@@ -163,9 +166,14 @@ class AudioFeaturesSpirographSketch {
       const radius = rad / (i + 1); // radius for circle itself
       surface.rotate(sines[i]); // rotate circle
 
+      // The actual drawing
       surface.push(); // go up one level
       surface.translate(0, radius); // move to sine edge
-      surface.ellipse(0, 0, penRadius, penRadius); // draw with penRadius
+      // Draw everything except first sine
+      if (i > 0) {
+        // TODO: Possibly skip other SINES based on some audio features
+        surface.ellipse(0, 0, penRadius, penRadius); // draw with penRadius
+      }
       surface.pop(); // go down one level
 
       surface.translate(0, radius); // move into position for next sine
