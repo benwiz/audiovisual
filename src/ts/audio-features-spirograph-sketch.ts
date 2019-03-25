@@ -129,7 +129,7 @@ class AudioFeaturesSpirographSketch {
   // Draw //
   //////////
 
-  drawSurface = (surface: any, sines: number[]): void => {
+  drawSurface = async (surface: any, sines: number[]): Promise<void> => {
     // Some configs
     const fund = 0.005; // the speed of the central sine
     const ratio = 1; // what multiplier for speed is each additional sine?
@@ -171,7 +171,7 @@ class AudioFeaturesSpirographSketch {
     }
 
     const energy = this.TRACK_AUDIO_FEATURES.energy;
-    const iterations: number = this.scale(energy, 0, 1, 300, 1200);
+    const iterations: number = this.scale(energy, 0, 1, 300, 500);
     for (let i: number = 0; i < iterations; i++) {
       // Draw on the canvas by passing in p5
       this.drawSurface(p5, this.SINES);
