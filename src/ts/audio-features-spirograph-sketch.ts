@@ -151,13 +151,11 @@ class AudioFeaturesSpirographSketch {
     const fundamental = this.scale(energy, 0, 1, 0.001, 0.02); // 0.005; // the speed of the central sine ~0.005 is good
     const ratio = this.scale(tempo, 50, 180, 0.5, 2); // what multiplier for speed is each additional sine? ~1 is good
     const alpha = this.scale(danceability, 0, 1, 35, 70); // how opaque is the tracing system [0, 100]
-
-    // Some "globals"
     const circleRadius = surface.height / 4; // compute radius for central circle
 
     // Iterations is how much of the spirograph to draw
     const iterations: number = this.scale(energy, 0, 1, 500, 1300);
-    for (let i: number = 0; i < iterations; i++) {
+    for (let iteration: number = 0; iteration < iterations; iteration++) {
       // Translate to center and create matrix to draw on
       surface.push();
       surface.translate(surface.width / 2, surface.height / 2);
@@ -165,6 +163,7 @@ class AudioFeaturesSpirographSketch {
       // Draw each sine
       for (let i: number = 0; i < sines.length; i++) {
         // Set color
+        surface.strokeWeight(1);
         surface.stroke(0, 0, 255 * (surface.float(i) / sines.length), alpha);
         surface.fill(0, 0, 255, alpha / 2);
 
@@ -178,7 +177,7 @@ class AudioFeaturesSpirographSketch {
         // The actual drawing
         surface.push(); // go up one level
         surface.translate(0, radius); // move to sine edge
-        // Draw everything except first sine
+        // Draw all sines except first sine
         if (i > 0) {
           // TODO: Possibly skip other SINES based on some audio features
           surface.ellipse(0, 0, penRadius, penRadius); // draw with penRadius
