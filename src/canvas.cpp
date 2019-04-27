@@ -74,7 +74,7 @@ void Canvas::drawFFT() {
 }
 
 void Canvas::drawMelBands() {
-    // TODO: Should be very similar to drawFF().
+    // TODO: Should be very similar to drawFFT().
 }
 
 void Canvas::drawRibbon() {
