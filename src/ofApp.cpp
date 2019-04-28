@@ -33,6 +33,8 @@ void ofApp::audioIn(ofSoundBuffer &inBuffer) {
 void ofApp::keyPressed(int key){
     if (key == 'r') {
         canvas.reset();
+    } else if (key == 's') {
+        ofSaveScreen("/Users/benwiz/Downloads/" + ofGetTimestampString() + ".png");
     }
 }
 

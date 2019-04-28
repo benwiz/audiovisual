@@ -145,7 +145,7 @@ void Canvas::drawRibbon() {
             ofVec3f point = polyline.getPointAtPercent(p / 500.0);
             float floatIndex = polyline.getIndexAtPercent(p / 500.0);
             ofVec3f tangent = polyline.getTangentAtIndexInterpolated(floatIndex) * tangentLength;
-            ofDrawLine(point-tangent/2, point+tangent/2);
+            ofDrawLine(point - tangent / 2, point + tangent / 2);
         }
         
     }
