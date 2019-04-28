@@ -19,15 +19,28 @@ public:
     void update();
     void draw();
     void reset();
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
     
 private:
-    float w;
-    float h;
-    vector<Packet> packets;
-    float spectrumMin = 999;
-    float spectrumMax = -999;
-    
+    void updateRibbon();
     void drawFFT();
     void drawMelBands();
     void drawRibbon();
+    
+    // Essentials
+    float w;
+    float h;
+    vector<Packet> packets;
+    
+    // FFT
+    float spectrumMin;
+    float spectrumMax;
+    
+    // Ribbon
+    ofPolyline currentPolyline;
+    bool leftMouseButtonPressed;
+    ofVec2f lastPoint;
+    float minDistance;
+    vector<ofPolyline> polylines;
 };

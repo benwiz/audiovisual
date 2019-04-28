@@ -12,12 +12,31 @@ Canvas::Canvas() {}
 void Canvas::setup(float w, float h) {
     this->w = w;
     this->h = h;
-//    net.setup(20, 20);
+
+    // FFT
+    spectrumMin = 999;
+    spectrumMax = -999;
+    
+    // Ribbon
+    minDistance = 10;
+    leftMouseButtonPressed = false;
 }
 
 void Canvas::recordPacket(Packet packet) {
     // Append packet to vector
     packets.push_back(packet);
+}
+
+void Canvas::updateRibbon() {
+    if (leftMouseButtonPressed) {
+        ofVec2f mousePos(ofGetMouseX(), ofGetMouseY());
+        if (lastPoint.distance(mousePos) >= minDistance) {
+            // a.distance(b) calculates the Euclidean distance between point a and b.  It's
+            // the length of the straight line distance between the points.
+            currentPolyline.curveTo(mousePos.x, mousePos.y);
+            lastPoint = mousePos;
+        }
+    }
 }
 
 void Canvas::update() {
@@ -29,6 +48,9 @@ void Canvas::update() {
         // packet. Clearing then re-adding probably isn't the best way to do this. But whatever.
         packets.clear();
         packets.push_back(lastPacket);
+        
+        // Update ribbon
+        updateRibbon();
     }
 }
 
@@ -78,16 +100,44 @@ void Canvas::drawMelBands() {
 }
 
 void Canvas::drawRibbon() {
-    
+    ofBackground(255);
+    ofSetColor(0);  // Black for saved polylines
+    for (int i = 0; i < polylines.size(); i++) {
+        ofPolyline polyline = polylines[i];
+        polyline.draw();
+    }
+    ofSetColor(255,100,0);  // Orange color for active polyline
+    currentPolyline.draw();
 }
 
 void Canvas::draw() {
     // Draw the fft spectrum for debugging
     drawFFT();
+    
+    // Draw the ribbon
+    drawRibbon();
 }
 
 void Canvas::reset() {
     packets.clear();
     spectrumMin = 999;
     spectrumMax = -999;
+}
+
+void Canvas::mousePressed(int x, int y, int button) {
+    if (button == OF_MOUSE_BUTTON_LEFT) {
+        leftMouseButtonPressed = true;
+        currentPolyline.curveTo(x, y);  // Remember that x and y are the location of the mouse
+        currentPolyline.curveTo(x, y);  // Necessary duplicate for first control point
+        lastPoint.set(x, y);  // Set the x and y
+    }
+}
+
+void Canvas::mouseReleased(int x, int y, int button) {
+    if (button == OF_MOUSE_BUTTON_LEFT) {
+        leftMouseButtonPressed = false;
+        currentPolyline.curveTo(x, y); // Necessary duplicate for last control point
+        polylines.push_back(currentPolyline);
+        currentPolyline.clear();  // Erase the vertices, allows us to start a new brush stroke
+    }
 }
