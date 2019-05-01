@@ -134,8 +134,8 @@ void Canvas::drawRibbon() {
 void Canvas::draw() {
     ofBackground(255);
     
-    // Draw the fft spectrum for debugging
-    drawFFT();
+//    // Draw the fft spectrum for debugging
+//    drawFFT();
     
     // Draw the ribbon
     drawRibbon();
