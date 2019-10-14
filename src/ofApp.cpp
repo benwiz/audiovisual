@@ -29,6 +29,9 @@ void ofApp::setup(){
     // Set up audio analyzer
     audioAnalyzer.setup(settings.sampleRate, settings.bufferSize, settings.numInputChannels);
     
+    // Set up shader
+    cout << ofIsGLProgrammableRenderer() << endl;
+    shader.load("shaders/color-organ-1");
 }
 
 //--------------------------------------------------------------
@@ -40,11 +43,18 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    // Draw rms circle
-    ofSetColor(245, 58, 135);
-    ofFill();
-    ofDrawCircle(ofGetWidth() / 2, ofGetHeight() / 2, packet.rms * 150.0f);
+//    // Draw rms circle
+//    ofSetColor(245, 58, 135);
+//    ofFill();
+//    ofDrawCircle(ofGetWidth() / 2, ofGetHeight() / 2, packet.rms * 150.0f);
+
+    ofSetColor(255);
     
+    shader.begin();
+    
+    ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+    
+    shader.end();
 }
 
 //--------------------------------------------------------------

@@ -45,6 +45,8 @@
 		0B54B44EFD41F864E0BD75D7 /* audiodecoderbase.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = audiodecoderbase.cpp; path = ../../../addons/ofxAudioDecoder/libs/src/audiodecoderbase.cpp; sourceTree = SOURCE_ROOT; };
 		0C4E75F6235532BC00F34157 /* packet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = packet.cpp; sourceTree = "<group>"; };
 		0C4E75F7235532BC00F34157 /* packet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = packet.h; sourceTree = "<group>"; };
+		0C4E75FB23553B5F00F34157 /* color-organ-1.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = "color-organ-1.frag"; path = "bin/data/shaders/color-organ-1.frag"; sourceTree = "<group>"; };
+		0C4E75FC23553C4200F34157 /* color-organ-1.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = "color-organ-1.vert"; path = "bin/data/shaders/color-organ-1.vert"; sourceTree = "<group>"; };
 		0D082D21536771F74FC6B427 /* ffmpegapi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ffmpegapi.h; path = ../../../addons/ofxAudioAnalyzer/libs/essentia/include/essentia/utils/ffmpegapi.h; sourceTree = SOURCE_ROOT; };
 		0DD85E8A054A8F37CFD07DE3 /* parameter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = parameter.h; path = ../../../addons/ofxAudioAnalyzer/libs/essentia/include/essentia/parameter.h; sourceTree = SOURCE_ROOT; };
 		0EAB9089FE35D1143C7F21F9 /* ofxAAOnsetsAlgorithm.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxAAOnsetsAlgorithm.h; path = ../../../addons/ofxAudioAnalyzer/src/ofxAAOnsetsAlgorithm.h; sourceTree = SOURCE_ROOT; };
@@ -930,6 +932,8 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				0C4E75FC23553C4200F34157 /* color-organ-1.vert */,
+				0C4E75FB23553B5F00F34157 /* color-organ-1.frag */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,

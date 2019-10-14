@@ -25,17 +25,9 @@ public:
     
     void audioIn(ofSoundBuffer & input);
     
-    vector <float> left;
-    vector <float> right;
-    vector <float> volHistory;
-    
-    int     bufferCounter;
-    int     drawCounter;
-    
-    float smoothedVol;
-    float scaledVol;
-    
     ofSoundStream soundStream;
     ofxAudioAnalyzer audioAnalyzer;
     Packet packet;
+    
+    ofShader shader;
 };
