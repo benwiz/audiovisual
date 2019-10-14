@@ -30,8 +30,8 @@ void ofApp::setup(){
     audioAnalyzer.setup(settings.sampleRate, settings.bufferSize, settings.numInputChannels);
     
     // Set up shader
-    cout << ofIsGLProgrammableRenderer() << endl;
-    shader.load("shaders/color-organ-1");
+    shader.load("shaders/default.vert", "shaders/color-organ-1.frag");
+
 }
 
 //--------------------------------------------------------------
@@ -43,15 +43,23 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+    // NOTE: Drawings will appear behind transparent shader
 //    // Draw rms circle
 //    ofSetColor(245, 58, 135);
 //    ofFill();
 //    ofDrawCircle(ofGetWidth() / 2, ofGetHeight() / 2, packet.rms * 150.0f);
 
     ofSetColor(255);
-    
     shader.begin();
     
+    // Setup
+    shader.setUniform1f("iWidth", ofGetWidth());
+    shader.setUniform1f("iHeight", ofGetHeight());
+    
+    // Audio data
+    shader.setUniform1f("iRMS", packet.rms);
+    
+    // Screen
     ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
     
     shader.end();
