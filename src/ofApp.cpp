@@ -117,12 +117,12 @@ void ofApp::draw(){
     ofTranslate(565, 170, 0);
     
     ofSetColor(225);
-    ofDrawBitmapString("Scaled average vol (0-100): " + ofToString(scaledVol * 100.0, 0), 4, 18);
+    ofDrawBitmapString("Scaled average vol (0-100): " + ofToString(packet.rms * 100.0, 0), 4, 18);
     ofDrawRectangle(0, 0, 400, 400);
     
     ofSetColor(245, 58, 135);
     ofFill();
-    ofDrawCircle(200, 200, scaledVol * 190.0f);
+    ofDrawCircle(200, 200, packet.rms * 190.0f);
     
     //lets draw the volume history as a graph
     ofBeginShape();
