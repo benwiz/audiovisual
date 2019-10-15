@@ -1,7 +1,9 @@
 #include "ofApp.h"
 
 // https://openframeworks.cc/ofBook/chapters/shaders.html
-// TODO: Clean (map) and pass in FFT data https://forum.openframeworks.cc/t/passing-fft-audio-data-into-a-shader-as-a-texture2d-object-shadertoy/13756
+// TODO: Clean (map) and pass in FFT data
+// https://forum.openframeworks.cc/t/passing-fft-audio-data-into-a-shader-as-a-texture2d-object-shadertoy/13756
+// https://github.com/benwiz/ofNetAudioVisuals/blob/master/src/net.cpp#L70
 // TODO: Organize this project to be more friendly toward multiple shaders and different types of audio projects
 
 //--------------------------------------------------------------
