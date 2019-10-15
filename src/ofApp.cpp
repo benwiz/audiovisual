@@ -30,7 +30,9 @@ void ofApp::setup(){
     audioAnalyzer.setup(settings.sampleRate, settings.bufferSize, settings.numInputChannels);
     
     // Set up shader
-    shader.load("shaders/default.vert", "shaders/color-organ-1.frag");
+    vertShaderPath = "shaders/default.vert";
+    fragShaderPath = "shaders/color-organ-1.frag";
+    shader.load(vertShaderPath, fragShaderPath);
 
 }
 
@@ -87,6 +89,10 @@ void ofApp::keyPressed  (int key){
     
     if( key == 'e' ){
         soundStream.stop();
+    }
+    
+    if( key == 'r' ){
+        shader.load(vertShaderPath, fragShaderPath);
     }
 }
 

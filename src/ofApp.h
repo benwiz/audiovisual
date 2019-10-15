@@ -29,5 +29,7 @@ public:
     ofxAudioAnalyzer audioAnalyzer;
     Packet packet;
     
+    string vertShaderPath;
+    string fragShaderPath;
     ofShader shader;
 };
