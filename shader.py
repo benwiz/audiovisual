@@ -4,10 +4,23 @@ from vispy import gloo, app
 from vispy.gloo import Program, VertexBuffer, IndexBuffer
 from vispy.util.transforms import perspective, translate, rotate
 from vispy.geometry import create_cube
-import imageio
+import imageio # probably can use PIL instead of imageio
+from io import BytesIO
+from time import sleep
+from picamera import PiCamera
+from PIL import Image
 
+# Image from file
 im = imageio.imread('~/Downloads/banana.jpg')
 
+# Image from camera
+stream = BytesIO()
+camera = PiCamera()
+camera.start_preview()
+sleep(2) # Camera warm-up time
+camera.capture(stream, format='jpeg')
+stream.seek(0) # "Rewind" the stream to the beginning so we can read its content
+cam = Image.open(stream)
 
 vertex = """
 uniform mat4 model;
@@ -66,7 +79,7 @@ class Canvas(app.Canvas):
         model = np.eye(4, dtype=np.float32)
         self.program['model'] = model
         self.program['view'] = view
-        self.program['texture'] = im # checkerboard()
+        self.program['texture'] = cam # checkerboard()
 
         self.activate_zoom()
 
@@ -98,7 +111,7 @@ class Canvas(app.Canvas):
         self.phi += .5
         self.program['model'] = np.dot(rotate(self.theta, (0, 1, 0)),
                                        rotate(self.phi, (0, 1, 0)))
-        self.program['texture'] = im if self.counter % 200 else checkerboard()
+        # self.program['texture'] = im if self.counter % 200 else checkerboard()
         self.update()
 
 if __name__ == '__main__':
