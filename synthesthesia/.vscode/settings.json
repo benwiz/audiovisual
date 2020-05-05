@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "bashrc": "shellscript",
+        "bash_profile": "shellscript",
+        "bash_alias": "shellscript",
+        "cronfile": "shellscript",
+        ".bash_alias": "shellscript",
+        "*.config": "yaml",
+        "*.html": "html",
+        "__locale": "c",
+        "ios": "c",
+        "__bit_reference": "c",
+        "bitset": "c",
+        "chrono": "c",
+        "iterator": "c",
+        "string": "c",
+        "string_view": "c",
+        "avformat.h": "c",
+        "timestamp.h": "c",
+        "locale": "c"
+    }
+}
