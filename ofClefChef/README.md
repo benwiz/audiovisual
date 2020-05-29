@@ -1,13 +1,20 @@
 #  clefChef
 
-## Notes
+## What
 
-- (All algorithm implementation)[https://github.com/leozimmerman/ofxAudioAnalyzer/blob/master/example-allAlgorithms/src/ofApp.cpp]
+OpenFrameworks (C++) based audio visualizer. Intended to plot a single song or audioclip to a static image that is inspired by sheet music. Should be able to be printed out.
 
+## How
 
-## Ideas
+Using the "packet" configuring seen in my other OpenFrameworks projects. Some audio frames are consumed, analyzed, then sent to the game loop.
 
-- Run on different scales
+## Status
+
+Inactive.
+
+### Retrospective
+
+As much as I'd rather use another tool OpenFrameworks is excellent.
 
 ## To Do
 

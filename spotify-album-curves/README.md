@@ -1,6 +1,12 @@
 # spotify-album-curves
 
+## What
+
 Create curves (lines) based on a single audio feature for a set of songs (album). Export the result as a SVG. Allow some configuration like min/max y-values and thickness of the curve and possibly selection of audio feature property.
+
+## Why
+
+Continuing in my search to create a printable static audiovisual. I want to create something that carries more meaning than an abstraction of the waveform.
 
 ## Development Notes
 

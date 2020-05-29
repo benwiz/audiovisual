@@ -1,8 +1,8 @@
-# of2dAudioVisual
+# ofMusicVisualizer
 
 ## What
 
-OpenFrameworks (C++) based audio visualizer. Focus on 2D drawings.
+OpenFrameworks (C++) based audio visualizer. Very early attempt.
 
 ## How
 
