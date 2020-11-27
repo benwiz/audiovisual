@@ -26,8 +26,10 @@
               (.then (.. js/navigator -mediaDevices (getUserMedia #js {:video true :audio true}))
                      #(set! (.-srcObject video) %)
                      #(js/console.log %))))
-          #_(when (and video canvas)
-            (.drawImage ctx video 0, 0, 100, 100)))
+          (when (and video ctx)
+            ;; https://docs.opencv.org/master/db/d7f/tutorial_js_lucas_kanade.html
+            ;; TODO first try to draw a rectangle to canvas. DO this by creating a matrix then calling cv/imshow passing in canvas then matrix
+            ))
         (fn []))
       #js [canvasRef videoRef cap ctx])
 
@@ -35,7 +37,8 @@
            (d/h1 nil "Splash")
            (d/video {:ref   videoRef
                      :style #js {:backgroundColor "lightblue"
-                                 :transform       "scaleX(-1)"}
+                                 ;; :transform       "scaleX(-1)" ;; this is a hack, not real flipping of video
+                                 }
                      :autoPlay true})
            (d/canvas {:ref   canvasRef
                       :style #js {:backgroundColor "lightgreen"}}))))
