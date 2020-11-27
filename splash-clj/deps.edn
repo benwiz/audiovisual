@@ -1,0 +1,16 @@
+{:paths     ["src" "resources"]
+ :mvn/repos {"vendredi" {:url "https://repository.hellonico.info/repository/hellonico/"}
+             "icm"      {:url "http://maven.icm.edu.pl/artifactory/repo/"}}
+ :deps      {org.clojure/clojure {:mvn/version "1.10.1"}
+             origami/origami     {:mvn/version "4.3.0-0"}
+             #_#_com.sun/tools       {:mvn/version "8"}}
+ :aliases   {:test    {:extra-paths ["test"]
+                       :extra-deps  {org.clojure/test.check {:mvn/version "1.0.0"}}}
+             :runner  {:extra-deps {com.cognitect/test-runner
+                                    {:git/url "https://github.com/cognitect-labs/test-runner"
+                                     :sha     "f7ef16dc3b8332b0d77bc0274578ad5270fbfedd"}}
+                       :main-opts  ["-m" "cognitect.test-runner"
+                                    "-d" "test"]}
+             :uberjar {:extra-deps {seancorfield/depstar {:mvn/version "1.0.94"}}
+                       :main-opts  ["-m" "hf.depstar.uberjar" "splash.jar"
+                                    "-C" "-m" "com.benwiz.splash"]}}}

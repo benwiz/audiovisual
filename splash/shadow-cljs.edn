@@ -1,0 +1,14 @@
+{:source-paths ["src"]
+ :deps         {:aliases [:cljs]}
+ :nrepl        {:port 9000}
+ :builds       {:app {:target            :browser
+                      :output-dir        "target/js/compiled"
+                      :asset-path        "/js/compiled"
+                      :build-options     {:manifest-name "manifest.json"}
+                      :module-hash-names true
+                      :modules           {:main {:entries [com.benwiz.app]}}
+                      :devtools          {:before-load com.benwiz.app/stop
+                                          :after-load  com.benwiz.app/start
+                                          :http-root   "target"
+                                          :http-port   8700
+                                          :preloads    [devtools.preload]}}}}
