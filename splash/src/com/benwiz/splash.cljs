@@ -34,7 +34,8 @@
     (d/div nil
            (d/h1 nil "Splash")
            (d/video {:ref   videoRef
-                     :style #js {:backgroundColor "lightblue"}
+                     :style #js {:backgroundColor "lightblue"
+                                 :transform       "scaleX(-1)"}
                      :autoPlay true})
            (d/canvas {:ref   canvasRef
                       :style #js {:backgroundColor "lightgreen"}}))))
