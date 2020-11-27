@@ -8,25 +8,33 @@
   []
   (let [^js videoRef  (react/useRef nil)
         ^js canvasRef (react/useRef nil)
-        [cap setCap]  (react/useState nil)
-        [ctx setCtx]  (react/useState nil)]
+        [^js cap setCap]  (react/useState nil)
+        [^js ctx setCtx]  (react/useState nil)]
 
     (react/useEffect
       (fn []
-        (let [video  (.. videoRef -current)
-              canvas (.. canvasRef -current)]
-          (js/console.log "cap" video cap)
-          (js/console.log "ctx" canvas ctx)
+        (let [^js video  (.. videoRef -current)
+              ^js canvas (.. canvasRef -current)]
+          ;; (js/console.log "cap" video cap)
+          ;; (js/console.log "ctx" canvas ctx)
           (when (and video (nil? cap))
             (setCap (cv/VideoCapture. (.. videoRef -current))))
           (when (and video (nil? ctx))
-            (setCtx (.getContext ^js canvas "2d"))))
+            (setCtx (.getContext canvas "2d")))
+          (when video
+            (.catch
+              (.then (.. js/navigator -mediaDevices (getUserMedia #js {:video true :audio true}))
+                     #(set! (.-srcObject video) %)
+                     #(js/console.log %))))
+          #_(when (and video canvas)
+            (.drawImage ctx video 0, 0, 100, 100)))
         (fn []))
       #js [canvasRef videoRef cap ctx])
 
     (d/div nil
            (d/h1 nil "Splash")
            (d/video {:ref   videoRef
-                     :style #js {:backgroundColor "lightblue"}})
+                     :style #js {:backgroundColor "lightblue"}
+                     :autoPlay true})
            (d/canvas {:ref   canvasRef
                       :style #js {:backgroundColor "lightgreen"}}))))
